@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hinano Akiyama | Japanese-English Interpreter Los Angeles | Film, TV, Animation, Games</title>
+    <meta
+      name="description"
+      content="Hinano Akiyama is a Los Angeles-based Japanese-English interpreter and translator for entertainment: film, TV, animation, and games. Live interpretation, translation, localization, and bilingual production support."
+    />
+    <style>
+      :root {
+        --pink: #ff4fb2;
+        --pink2: #ff89cf;
+        --cream: #ffffff;
+        --muted: #ffe8f6;
+        --card: rgba(255, 255, 255, 0.18);
+        --line: rgba(255, 255, 255, 0.42);
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+        color: var(--cream);
+        background: #000;
+        scroll-behavior: smooth;
+      }
+      #matrix {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.5;
+        transform: translateZ(0);
+      }
+      a { color: #ffd3ef; }
+
+      .wrap {
+        position: relative;
+        z-index: 2;
+        max-width: 1140px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+      .top-controls {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 8px;
+      }
+      .lang-toggle {
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.09);
+        color: var(--cream);
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .hero {
+        min-height: 82vh;
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 28px;
+        align-items: center;
+      }
+      .tag {
+        display: inline-block;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.09);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      h1 {
+        margin: 14px 0 8px;
+        font-size: clamp(2.1rem, 6vw, 4.8rem);
+        line-height: 0.95;
+        letter-spacing: -0.02em;
+        text-shadow: 0 3px 16px rgba(0,0,0,0.55);
+      }
+      .jp {
+        color: var(--pink2);
+        font-weight: 700;
+        font-size: clamp(1.05rem, 2.4vw, 1.45rem);
+        margin-bottom: 14px;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.45);
+      }
+      .lede {
+        color: var(--muted);
+        font-size: clamp(1rem, 1.8vw, 1.2rem);
+        line-height: 1.6;
+        max-width: 56ch;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+      }
+      .availability {
+        margin-top: 14px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .pill {
+        border: 1px solid var(--line);
+        background: rgba(16, 10, 18, 0.58);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 0.8rem;
+      }
+
+      .btns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 22px;
+      }
+      .btn {
+        text-decoration: none;
+        border-radius: 12px;
+        padding: 12px 16px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.09);
+        color: var(--cream);
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .btn.primary {
+        background: linear-gradient(135deg, var(--pink), #ff6fbf);
+        color: #240014;
+        border-color: #ffbce2;
+      }
+
+      .portrait {
+        width: min(36vw, 360px);
+        margin: 0 auto;
+        border: 2px solid rgba(255, 121, 200, 0.65);
+        border-radius: 999px;
+        overflow: hidden;
+        background: radial-gradient(circle at 30% 20%, rgba(255, 79, 178, 0.35), rgba(0, 0, 0, 0.8));
+        box-shadow: 0 0 0 8px rgba(255, 79, 178, 0.08), 0 0 42px rgba(255, 79, 178, 0.35);
+      }
+      .portrait img {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        display: block;
+      }
+
+      section { margin: 38px 0 0; }
+      .section-title {
+        font-size: clamp(1.45rem, 3.3vw, 2.1rem);
+        margin: 0 0 14px;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+      }
+
+      .press-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 12px 14px;
+        background: rgba(18, 12, 24, 0.5);
+      }
+      .press-logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .press-logo img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+        filter: brightness(1.1);
+      }
+      .press-logo span {
+        font-size: 0.82rem;
+        color: #fff5fc;
+        font-weight: 600;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      }
+
+      .client-note {
+        margin: 0 0 10px;
+        color: #ffe7f6;
+        font-size: 0.94rem;
+      }
+      .client-frame {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 14px;
+        background: rgba(18, 12, 24, 0.56);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .client-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid rgba(255,255,255,0.45);
+        background: rgba(255,255,255,0.14);
+        border-radius: 999px;
+        padding: 6px 10px 6px 6px;
+        font-size: 0.84rem;
+        font-weight: 700;
+        color: #fff7fd;
+      }
+      .client-chip img {
+        width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        display: block;
+      }
+      .client-chip {
+        transition: transform .18s ease, box-shadow .18s ease;
+      }
+      .client-chip:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 22px rgba(255, 107, 197, 0.22);
+      }
+
+      .services {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 14px;
+        backdrop-filter: blur(2px);
+      }
+      .card h3 { margin: 0 0 8px; font-size: 1rem; color: #ffd6ef; }
+      .card p { margin: 0; color: #fff2fb; line-height: 1.55; font-size: 0.95rem; }
+
+      .cases {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .case-meta {
+        margin-top: 8px;
+        font-size: 0.82rem;
+        color: #ffd8f0;
+      }
+
+      .videos {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .video-card {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        overflow: hidden;
+        background: rgba(0,0,0,0.58);
+      }
+      .video-card iframe {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        border: 0;
+        display: block;
+      }
+      .video-label {
+        padding: 8px 10px;
+        font-size: 0.82rem;
+        color: #ffe7f6;
+      }
+
+      .credits-grid {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        scroll-snap-type: x mandatory;
+      }
+      .credits-grid::-webkit-scrollbar { height: 8px; }
+      .credits-grid::-webkit-scrollbar-thumb { background: rgba(255, 121, 200, 0.5); border-radius: 999px; }
+      .game {
+        position: relative;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        aspect-ratio: 3 / 4;
+        width: 210px;
+        flex: 0 0 210px;
+        scroll-snap-align: start;
+        background: #1d0a17;
+      }
+      .game img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .game .overlay {
+        position: absolute;
+        inset: auto 0 0;
+        padding: 10px;
+        background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.82));
+      }
+      .game .overlay a {
+        text-decoration: none;
+        color: #fff;
+        font-size: 0.86rem;
+        line-height: 1.35;
+        font-weight: 600;
+      }
+
+      .contact-form {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .contact-form .full { grid-column: 1 / -1; }
+      .contact-form input,
+      .contact-form textarea,
+      .contact-form select {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: rgba(10, 8, 12, 0.62);
+        color: #fff;
+        padding: 10px 12px;
+      }
+      .contact-note {
+        font-size: 0.82rem;
+        color: #ffe1f2;
+        margin-top: 8px;
+      }
+
+      @media (max-width: 980px) {
+        #matrix { display: none; }
+        body {
+          background: radial-gradient(1200px 700px at 15% 10%, rgba(255,79,178,0.2), transparent 52%),
+                      radial-gradient(1100px 680px at 85% 20%, rgba(50,255,230,0.16), transparent 55%),
+                      linear-gradient(180deg, #150710, #07050b 65%);
+        }
+        .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 8px; }
+        .services { grid-template-columns: 1fr; }
+        .cases { grid-template-columns: 1fr; }
+        .videos { grid-template-columns: 1fr; }
+        .press-row { overflow-x: auto; flex-wrap: nowrap; }
+        .press-logo { flex: 0 0 auto; }
+      }
+      @media (max-width: 560px) {
+        .game { width: 180px; flex-basis: 180px; }
+        .contact-form { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="matrix" aria-hidden="true"></canvas>
+    <main class="wrap">
+      <div class="top-controls">
+        <button id="langToggle" class="lang-toggle" aria-label="Toggle language">日本語</button>
+      </div>
+
+      <section class="hero">
+        <div>
+          <span class="tag" data-i18n="tag">Los Angeles · Entertainment</span>
+          <h1>Hinano Akiyama</h1>
+          <div class="jp" data-i18n="subtitle">日英通訳・翻訳 / Japanese ↔ English Interpreter & Translator</div>
+          <p class="lede" data-i18n="lede">
+            Trusted Japanese ↔ English language partner for film, TV, animation, and game projects across live interpretation, translation, and bilingual production communication.
+          </p>
+
+          <div class="availability">
+            <span class="pill" data-i18n="avail1">Based in Los Angeles</span>
+            <span class="pill" data-i18n="avail2">On-site / Remote</span>
+            <span class="pill" data-i18n="avail3">Entertainment-focused</span>
+            <span class="pill" data-i18n="avail4">Response within 24h</span>
+          </div>
+
+          <div class="btns">
+            <button id="bookBtn" class="btn primary" type="button" data-i18n="btnBook">Book Hinano</button>
+            <a class="btn" href="https://www.linkedin.com/in/hinano-akiyama/" target="_blank" rel="noopener noreferrer" data-i18n="btnLinkedIn">View LinkedIn</a>
+            <a class="btn" href="https://www.mobygames.com/person/1354824/hinano-akiyama/credits/" target="_blank" rel="noopener noreferrer" data-i18n="btnCredits">MobyGames Credits</a>
+                      </div>
+        </div>
+
+        <figure class="portrait">
+          <img src="https://unavatar.io/x/giraffarama" alt="Hinano Akiyama profile portrait" />
+        </figure>
+      </section>
+
+      <section>
+        <h2 class="section-title" data-i18n="secPublished">Interpretations published in</h2>
+        <div class="press-row">
+          <div class="press-logo" title="The New York Times"><img src="/assets/logos/nytimes.png" alt="The New York Times" loading="lazy" /><span>The New York Times</span></div>
+          <div class="press-logo" title="NPR"><img src="/assets/logos/npr.png" alt="NPR" loading="lazy" /><span>NPR</span></div>
+          <div class="press-logo" title="Bloomberg"><img src="/assets/logos/bloomberg.png" alt="Bloomberg" loading="lazy" /><span>Bloomberg</span></div>
+          <div class="press-logo" title="Variety"><img src="/assets/logos/variety.png" alt="Variety" loading="lazy" /><span>Variety</span></div>
+          <div class="press-logo" title="Rolling Stone"><img src="/assets/logos/rollingstone.png" alt="Rolling Stone" loading="lazy" /><span>Rolling Stone</span></div>
+          <div class="press-logo" title="GQ"><img src="/assets/logos/gq.png" alt="GQ" loading="lazy" /><span>GQ</span></div>
+          <div class="press-logo" title="CNET"><img src="/assets/logos/cnet.png" alt="CNET" loading="lazy" /><span>CNET</span></div>
+          <div class="press-logo" title="Game Informer"><img src="/assets/logos/gameinformer.png" alt="Game Informer" loading="lazy" /><span>Game Informer</span></div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title" data-i18n="secClients">Selected clients</h2>
+        <p class="client-note" data-i18n="clientLead">Selected clients and institutions include:</p>
+        <div class="client-frame">
+          <span class="client-chip"><img src="/assets/clients-real/warnerbros.ico" alt="Warner Bros." loading="lazy" />Warner Bros.</span>
+          <span class="client-chip"><img src="/assets/clients-real/sony.ico" alt="SONY" loading="lazy" />SONY</span>
+          <span class="client-chip"><img src="/assets/clients-real/nyfa.png" alt="New York Film Academy" loading="lazy" />New York Film Academy</span>
+          <span class="client-chip"><img src="/assets/clients-real/artcenter.png" alt="ArtCenter College of Design" loading="lazy" />ArtCenter College of Design</span>
+          <span class="client-chip"><img src="/assets/clients-real/jetro.png" alt="JETRO" loading="lazy" />JETRO</span>
+          <span class="client-chip"><img src="/assets/clients-real/shonan.ico" alt="Shonan Beauty Clinic" loading="lazy" />Shonan Beauty Clinic</span>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title" data-i18n="secServices">Services</h2>
+        <div class="services">
+          <article class="card">
+            <h3 data-i18n="svc1h">Live Interpretation</h3>
+            <p data-i18n="svc1p">On-set, studio, interview, press, panel, and meeting interpretation for Japanese-English teams.</p>
+          </article>
+          <article class="card">
+            <h3 data-i18n="svc2h">Translation & Subtitles</h3>
+            <p data-i18n="svc2p">Scripts, decks, interview material, press copy, subtitles, and nuanced adaptation for bilingual audiences.</p>
+          </article>
+          <article class="card">
+            <h3 data-i18n="svc3h">Localization & QA Support</h3>
+            <p data-i18n="svc3p">Context-aware language review for game and media content, preserving intent, tone, and audience fit.</p>
+          </article>
+          <article class="card">
+            <h3 data-i18n="svc4h">Bilingual Production Bridge</h3>
+            <p data-i18n="svc4p">Cross-cultural communication support for producers, PR teams, and creative stakeholders.</p>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title" data-i18n="secCases">Selected case snapshots</h2>
+        <div class="cases">
+          <article class="card">
+            <h3 data-i18n="case1h">Global game launch comms</h3>
+            <p data-i18n="case1p">Supported Japanese-English communications across launch-phase PR and internal alignment.</p>
+            <div class="case-meta" data-i18n="case1m">Outcome: smoother cross-team execution under deadline pressure.</div>
+          </article>
+          <article class="card">
+            <h3 data-i18n="case2h">Interview & press interpretation</h3>
+            <p data-i18n="case2p">Enabled clear creator/producer messaging for bilingual media interactions.</p>
+            <div class="case-meta" data-i18n="case2m">Outcome: improved message fidelity and audience clarity.</div>
+          </article>
+          <article class="card">
+            <h3 data-i18n="case3h">Localization support in production</h3>
+            <p data-i18n="case3p">Bridged language and culture in iterative content review cycles.</p>
+            <div class="case-meta" data-i18n="case3m">Outcome: fewer revisions and stronger narrative consistency.</div>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title" data-i18n="secVideos">Featured videos</h2>
+        <div class="videos">
+          <article class="video-card">
+            <iframe src="https://www.youtube.com/embed/Zqv8XOR_Tw4" title="Featured video 1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div class="video-label" data-i18n="video1">Live interpretation context sample</div>
+          </article>
+          <article class="video-card">
+            <iframe src="https://www.youtube.com/embed/iSoelj2mk_w" title="Featured video 2" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div class="video-label" data-i18n="video2">Nuance and pacing in bilingual delivery</div>
+          </article>
+          <article class="video-card">
+            <iframe src="https://www.youtube.com/embed/ARPUhj-bKXI" title="Featured video 3" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div class="video-label" data-i18n="video3">Entertainment communication style sample</div>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title" data-i18n="secCredits">Selected game-credit visuals</h2>
+        <div class="credits-grid">
+          <article class="game">
+            <img src="https://cdn.mobygames.com/covers/25549433-visions-of-mana-playstation-5-front-cover.jpg" alt="Visions of Mana cover" loading="lazy" />
+            <div class="overlay"><a href="https://www.mobygames.com/game/229741/visions-of-mana/" target="_blank" rel="noopener noreferrer">Visions of Mana</a></div>
+          </article>
+          <article class="game">
+            <img src="https://cdn.mobygames.com/covers/17601856-final-fantasy-vii-ever-crisis-iphone-front-cover.png" alt="Final Fantasy VII: Ever Crisis cover" loading="lazy" />
+            <div class="overlay"><a href="https://www.mobygames.com/game/208518/final-fantasy-vii-ever-crisis/" target="_blank" rel="noopener noreferrer">Final Fantasy VII: Ever Crisis</a></div>
+          </article>
+          <article class="game">
+            <img src="https://cdn.mobygames.com/covers/18867352-final-fantasy-xiv-online-dawntrail-playstation-4-front-cover.png" alt="Final Fantasy XIV Online: Dawntrail cover" loading="lazy" />
+            <div class="overlay"><a href="https://www.mobygames.com/game/227377/final-fantasy-xiv-online-dawntrail/" target="_blank" rel="noopener noreferrer">FFXIV: Dawntrail</a></div>
+          </article>
+          <article class="game">
+            <img src="https://cdn.mobygames.com/covers/17057150-octopath-traveler-ii-nintendo-switch-front-cover.jpg" alt="Octopath Traveler II cover" loading="lazy" />
+            <div class="overlay"><a href="https://www.mobygames.com/game/199652/octopath-traveler-ii/" target="_blank" rel="noopener noreferrer">Octopath Traveler II</a></div>
+          </article>
+          <article class="game">
+            <img src="https://cdn.mobygames.com/covers/18572661-saga-emerald-beyond-nintendo-switch-front-cover.jpg" alt="SaGa: Emerald Beyond cover" loading="lazy" />
+            <div class="overlay"><a href="https://www.mobygames.com/game/222713/saga-emerald-beyond/" target="_blank" rel="noopener noreferrer">SaGa: Emerald Beyond</a></div>
+          </article>
+          <article class="game">
+            <img src="https://cdn.mobygames.com/covers/24548379-final-fantasy-tactics-the-ivalice-chronicles-playstation-5-front.jpg" alt="Final Fantasy Tactics: The Ivalice Chronicles cover" loading="lazy" />
+            <div class="overlay"><a href="https://www.mobygames.com/game/248588/final-fantasy-tactics-the-ivalice-chronicles/" target="_blank" rel="noopener noreferrer">FF Tactics: Ivalice Chronicles</a></div>
+          </article>
+          <article class="game">
+            <img src="https://cdn.mobygames.com/covers/2726703-dragon-quest-builders-playstation-3-front-cover.jpg" alt="Dragon Quest Builders cover" loading="lazy" />
+            <div class="overlay"><a href="https://www.mobygames.com/game/83602/dragon-quest-builders/" target="_blank" rel="noopener noreferrer">Dragon Quest Builders</a></div>
+          </article>
+          <article class="game">
+            <img src="https://imguscdn.gamespress.com/cdn/files/Square-Enix/2023/05/242034-767e6cd1/FOAMSTARS_Art_png_jpgcopy.jpg" alt="Foamstars key art" loading="lazy" onerror="this.src='https://cdn.mobygames.com/covers/17601856-final-fantasy-vii-ever-crisis-iphone-front-cover.png'" />
+            <div class="overlay"><a href="https://www.mobygames.com/game/217170/foamstars/" target="_blank" rel="noopener noreferrer">Foamstars</a></div>
+          </article>
+          <article class="game">
+            <img src="https://cdn.mobygames.com/covers/20469872-octopath-traveler-0-windows-front-cover.jpg" alt="Octopath Traveler 0 cover" loading="lazy" />
+            <div class="overlay"><a href="https://www.mobygames.com/game/245852/octopath-traveler-0/" target="_blank" rel="noopener noreferrer">Octopath Traveler 0</a></div>
+          </article>
+          <article class="game">
+            <img src="https://cdn.mobygames.com/covers/8922125-war-of-the-visions-final-fantasy-brave-exvius-iphone-front-cover.jpg" alt="War of the Visions: Final Fantasy Brave Exvius cover" loading="lazy" />
+            <div class="overlay"><a href="https://www.mobygames.com/game/146826/war-of-the-visions-final-fantasy-brave-exvius/" target="_blank" rel="noopener noreferrer">War of the Visions</a></div>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title" data-i18n="secContact">Book / Contact</h2>
+        <form id="contactForm" class="contact-form card" autocomplete="off">
+          <input type="text" name="company" class="full" data-i18n-placeholder="phCompany" placeholder="Company / Studio" />
+          <select name="projectType" data-i18n-select="selProject">
+            <option value="">Project type</option>
+            <option>Film / TV</option>
+            <option>Animation</option>
+            <option>Games</option>
+            <option>Press / Interview</option>
+            <option>Other</option>
+          </select>
+          <input type="text" name="date" data-i18n-placeholder="phDate" placeholder="Target date / timeframe" />
+          <input type="text" name="langDir" data-i18n-placeholder="phLang" placeholder="Language direction (JP→EN / EN→JP / both)" />
+          <input type="text" name="budget" data-i18n-placeholder="phBudget" placeholder="Budget range (optional)" />
+          <input type="text" name="name" class="full" data-i18n-placeholder="phName" placeholder="Your name" required />
+          <input type="email" name="email" class="full" data-i18n-placeholder="phEmail" placeholder="Your email" required />
+          <textarea name="brief" rows="5" class="full" data-i18n-placeholder="phBrief" placeholder="Project brief" required></textarea>
+          <input type="text" name="website" class="full" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <button class="btn primary full" type="submit" data-i18n="btnSend">Send inquiry</button>
+          <div class="contact-note full" data-i18n="contactNote">By submitting, your draft opens in email so you can review before sending.</div>
+        </form>
+      </section>
+    </main>
+
+    <script>
+      (() => {
+        const i18n = {
+          en: {
+            tag: 'Los Angeles · Entertainment',
+            subtitle: '日英通訳・翻訳 / Japanese ↔ English Interpreter & Translator',
+            lede: 'Trusted Japanese ↔ English language partner for film, TV, animation, and game projects across live interpretation, translation, and bilingual production communication.',
+            avail1: 'Based in Los Angeles', avail2: 'On-site / Remote', avail3: 'Entertainment-focused', avail4: 'Response within 24h',
+            btnBook: 'Book Hinano', btnLinkedIn: 'View LinkedIn', btnCredits: 'MobyGames Credits',
+            secPublished: 'Interpretations published in', secClients: 'Selected clients', secServices: 'Services', secCases: 'Selected case snapshots',
+            secVideos: 'Featured videos', secCredits: 'Selected game-credit visuals', secContact: 'Book / Contact',
+            clientLead: 'Selected clients and institutions include:',
+            svc1h: 'Live Interpretation', svc1p: 'On-set, studio, interview, press, panel, and meeting interpretation for Japanese-English teams.',
+            svc2h: 'Translation & Subtitles', svc2p: 'Scripts, decks, interview material, press copy, subtitles, and nuanced adaptation for bilingual audiences.',
+            svc3h: 'Localization & QA Support', svc3p: 'Context-aware language review for game and media content, preserving intent, tone, and audience fit.',
+            svc4h: 'Bilingual Production Bridge', svc4p: 'Cross-cultural communication support for producers, PR teams, and creative stakeholders.',
+            case1h: 'Global game launch comms', case1p: 'Supported Japanese-English communications across launch-phase PR and internal alignment.', case1m: 'Outcome: smoother cross-team execution under deadline pressure.',
+            case2h: 'Interview & press interpretation', case2p: 'Enabled clear creator/producer messaging for bilingual media interactions.', case2m: 'Outcome: improved message fidelity and audience clarity.',
+            case3h: 'Localization support in production', case3p: 'Bridged language and culture in iterative content review cycles.', case3m: 'Outcome: fewer revisions and stronger narrative consistency.',
+            video1: 'Live interpretation context sample', video2: 'Nuance and pacing in bilingual delivery', video3: 'Entertainment communication style sample',
+            phCompany: 'Company / Studio', phDate: 'Target date / timeframe', phLang: 'Language direction (JP→EN / EN→JP / both)', phBudget: 'Budget range (optional)', phName: 'Your name', phEmail: 'Your email', phBrief: 'Project brief',
+            selProject: ['Project type', 'Film / TV', 'Animation', 'Games', 'Press / Interview', 'Other'],
+            btnSend: 'Send inquiry', contactNote: 'By submitting, your draft opens in email so you can review before sending.',
+            toggleLabel: '日本語'
+          },
+          ja: {
+            tag: 'ロサンゼルス・エンタメ',
+            subtitle: '日英通訳・翻訳 / Japanese ↔ English Interpreter & Translator',
+            lede: '映画・テレビ・アニメ・ゲーム領域で、日英のライブ通訳、翻訳、制作コミュニケーションを支える言語パートナーです。',
+            avail1: 'ロサンゼルス拠点', avail2: '現地 / リモート対応', avail3: 'エンタメ特化', avail4: '24時間以内に返信',
+            btnBook: '相談を予約', btnLinkedIn: 'LinkedInを見る', btnCredits: 'MobyGamesクレジット',
+            secPublished: '掲載・通訳実績メディア', secClients: '主なクライアント', secServices: 'サービス', secCases: 'ケーススナップショット',
+            secVideos: '注目動画', secCredits: 'ゲームクレジット・ビジュアル', secContact: '予約・お問い合わせ',
+            clientLead: 'これまでに関わった主なクライアント・機関：',
+            svc1h: 'ライブ通訳', svc1p: '撮影現場、スタジオ、インタビュー、記者対応、パネル、会議での日英通訳。',
+            svc2h: '翻訳・字幕', svc2p: '脚本、資料、インタビュー素材、PR文面、字幕の翻訳と自然な表現調整。',
+            svc3h: 'ローカライズ / QA支援', svc3p: '文脈を踏まえた言語レビューで、意図・トーン・受け手適合性を担保。',
+            svc4h: '制作コミュニケーション橋渡し', svc4p: 'プロデューサー、PR、クリエイティブ各関係者間の円滑な日英連携を支援。',
+            case1h: 'グローバルゲームローンチ対応', case1p: 'ローンチ期のPR・社内連携における日英コミュニケーションを支援。', case1m: '成果：短納期下でも連携精度を維持。',
+            case2h: 'インタビュー / プレス通訳', case2p: 'バイリンガル環境で制作者メッセージの明瞭性を確保。', case2m: '成果：発信内容の再現性と理解度向上。',
+            case3h: '制作段階でのローカライズ支援', case3p: '反復レビューで言語・文化ギャップを解消。', case3m: '成果：修正往復の削減と一貫性向上。',
+            video1: 'ライブ通訳サンプル', video2: 'ニュアンス・速度調整サンプル', video3: 'エンタメ文脈での伝達サンプル',
+            phCompany: '会社 / スタジオ名', phDate: '希望時期', phLang: '言語方向（日本語→英語 / 英語→日本語 / 双方向）', phBudget: '予算レンジ（任意）', phName: 'お名前', phEmail: 'メールアドレス', phBrief: '案件概要',
+            selProject: ['案件タイプ', '映画 / TV', 'アニメ', 'ゲーム', 'プレス / インタビュー', 'その他'],
+            btnSend: '問い合わせを作成', contactNote: '送信時にメール下書きが開き、内容確認後に送信できます。',
+            toggleLabel: 'English'
+          }
+        };
+
+        let lang = 'en';
+        const setLang = (next) => {
+          lang = next;
+          document.documentElement.lang = lang;
+          document.querySelectorAll('[data-i18n]').forEach((el) => {
+            const key = el.getAttribute('data-i18n');
+            if (i18n[lang][key]) el.textContent = i18n[lang][key];
+          });
+          document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            if (i18n[lang][key]) el.setAttribute('placeholder', i18n[lang][key]);
+          });
+          document.querySelectorAll('[data-i18n-select]').forEach((el) => {
+            const key = el.getAttribute('data-i18n-select');
+            const opts = i18n[lang][key] || [];
+            [...el.options].forEach((o, i) => { if (opts[i]) o.text = opts[i]; });
+          });
+          const t = document.getElementById('langToggle');
+          if (t) t.textContent = i18n[lang].toggleLabel;
+        };
+
+        document.getElementById('langToggle')?.addEventListener('click', () => setLang(lang === 'en' ? 'ja' : 'en'));
+        setLang('en');
+
+        const composeMail = (subject, body) => `mailto:contact.hinano@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+        document.getElementById('bookBtn')?.addEventListener('click', () => {
+          const subject = lang === 'ja' ? '通訳・翻訳のご相談' : 'Booking Inquiry — Interpretation/Translation';
+          const body = lang === 'ja'
+            ? '案件概要をご記入ください。\n- 会社名\n- 案件タイプ\n- 希望時期\n- 言語方向\n- 予算レンジ\n- 詳細'
+            : 'Please share project details:\n- Company\n- Project type\n- Timeline\n- Language direction\n- Budget range\n- Notes';
+          window.location.href = composeMail(subject, body);
+        });
+
+        const form = document.getElementById('contactForm');
+        const createdAt = Date.now();
+        form?.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const fd = new FormData(form);
+          if ((fd.get('website') || '').toString().trim()) return;
+          if (Date.now() - createdAt < 1500) return;
+
+          const subject = `[${fd.get('projectType') || 'Inquiry'}] ${fd.get('company') || ''}`.trim();
+          const body = [
+            `Company/Studio: ${fd.get('company') || ''}`,
+            `Project type: ${fd.get('projectType') || ''}`,
+            `Timeline: ${fd.get('date') || ''}`,
+            `Language direction: ${fd.get('langDir') || ''}`,
+            `Budget: ${fd.get('budget') || ''}`,
+            `Name: ${fd.get('name') || ''}`,
+            `Email: ${fd.get('email') || ''}`,
+            '',
+            `Brief:\n${fd.get('brief') || ''}`
+          ].join('\n');
+          window.location.href = composeMail(subject, body);
+        });
+
+        // background animation (oil droplets)
+        const c = document.getElementById('matrix');
+        const mobileOrReduced = window.matchMedia('(max-width: 980px)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!c || mobileOrReduced) {
+          if (c) c.style.display = 'none';
+          return;
+        }
+        const ctx = c.getContext('2d');
+        let w = 0;
+        let h = 0;
+        let t = 0;
+
+        const palette = [
+          ['rgba(255, 40, 170, 0.65)', 'rgba(255, 140, 220, 0.18)'],
+          ['rgba(50, 255, 230, 0.62)', 'rgba(35, 190, 255, 0.2)'],
+          ['rgba(255, 95, 205, 0.58)', 'rgba(255, 255, 255, 0.16)']
+        ];
+
+        const drops = [];
+
+        const mkDrop = (i = 0) => {
+          const r = 40 + Math.random() * 180;
+          return {
+            x: Math.random() * w,
+            y: Math.random() * h,
+            r,
+            dx: (Math.random() - 0.5) * 0.22,
+            dy: (Math.random() - 0.5) * 0.22,
+            wobble: 0.3 + Math.random() * 1.2,
+            phase: Math.random() * Math.PI * 2,
+            pal: palette[i % palette.length]
+          };
+        };
+
+        const resize = () => {
+          w = c.width = window.innerWidth;
+          h = c.height = window.innerHeight;
+          if (!drops.length) {
+            const n = Math.max(14, Math.floor(w / 95));
+            for (let i = 0; i < n; i++) drops.push(mkDrop(i));
+          }
+        };
+
+        const drawDrop = (d, i) => {
+          d.x += d.dx;
+          d.y += d.dy;
+          if (d.x < -d.r) d.x = w + d.r;
+          if (d.x > w + d.r) d.x = -d.r;
+          if (d.y < -d.r) d.y = h + d.r;
+          if (d.y > h + d.r) d.y = -d.r;
+
+          const jitter = Math.sin(t * 0.0012 * d.wobble + d.phase) * 8;
+          const rr = d.r + Math.sin(t * 0.0016 + i) * 6;
+          const grad = ctx.createRadialGradient(
+            d.x + jitter * 0.35,
+            d.y - jitter * 0.15,
+            rr * 0.12,
+            d.x,
+            d.y,
+            rr
+          );
+          grad.addColorStop(0, d.pal[0]);
+          grad.addColorStop(0.6, d.pal[1]);
+          grad.addColorStop(1, 'rgba(0,0,0,0)');
+
+          ctx.globalCompositeOperation = 'screen';
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.ellipse(d.x, d.y, rr * 1.08, rr * 0.86, jitter * 0.01, 0, Math.PI * 2);
+          ctx.fill();
+
+          const sparkN = 2 + (i % 4);
+          for (let s = 0; s < sparkN; s++) {
+            const a = (s / sparkN) * Math.PI * 2 + t * 0.0006;
+            const sx = d.x + Math.cos(a) * rr * 0.45;
+            const sy = d.y + Math.sin(a) * rr * 0.35;
+            ctx.fillStyle = 'rgba(255,255,255,0.48)';
+            ctx.fillRect(sx, sy, 1.4, 1.4);
+          }
+        };
+
+        const frame = () => {
+          t += 16;
+          ctx.globalCompositeOperation = 'source-over';
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.18)';
+          ctx.fillRect(0, 0, w, h);
+          for (let i = 0; i < drops.length; i++) drawDrop(drops[i], i);
+          requestAnimationFrame(frame);
+        };
+
+        resize();
+        requestAnimationFrame(frame);
+        window.addEventListener('resize', resize);
+      })();
+    </script>
+  </body>
+</html>
