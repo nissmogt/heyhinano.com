@@ -360,9 +360,9 @@
   <body>
     <canvas id="matrix" aria-hidden="true"></canvas>
     <main class="wrap">
-      <div class="top-controls">
+      <!-- <div class="top-controls">
         <button id="langToggle" class="lang-toggle" aria-label="Toggle language">日本語</button>
-      </div>
+      </div> -->
 
       <section class="hero">
         <div>
@@ -447,17 +447,14 @@
           <article class="card">
             <h3 data-i18n="case1h">Global game launch comms</h3>
             <p data-i18n="case1p">Supported Japanese-English communications across launch-phase PR and internal alignment.</p>
-            <div class="case-meta" data-i18n="case1m">Outcome: smoother cross-team execution under deadline pressure.</div>
           </article>
           <article class="card">
             <h3 data-i18n="case2h">Interview & press interpretation</h3>
             <p data-i18n="case2p">Enabled clear creator/producer messaging for bilingual media interactions.</p>
-            <div class="case-meta" data-i18n="case2m">Outcome: improved message fidelity and audience clarity.</div>
           </article>
           <article class="card">
-            <h3 data-i18n="case3h">Localization support in production</h3>
-            <p data-i18n="case3p">Bridged language and culture in iterative content review cycles.</p>
-            <div class="case-meta" data-i18n="case3m">Outcome: fewer revisions and stronger narrative consistency.</div>
+            <h3 data-i18n="case3h">MC for livestream and in-person events</h3>
+            <p data-i18n="case3p"></p>
           </article>
         </div>
       </section>
@@ -569,7 +566,7 @@
             svc4h: 'Bilingual Production Bridge', svc4p: 'Cross-cultural communication support for producers, PR teams, and creative stakeholders.',
             case1h: 'Global game launch comms', case1p: 'Supported Japanese-English communications across launch-phase PR and internal alignment.', case1m: 'Outcome: smoother cross-team execution under deadline pressure.',
             case2h: 'Interview & press interpretation', case2p: 'Enabled clear creator/producer messaging for bilingual media interactions.', case2m: 'Outcome: improved message fidelity and audience clarity.',
-            case3h: 'Localization support in production', case3p: 'Bridged language and culture in iterative content review cycles.', case3m: 'Outcome: fewer revisions and stronger narrative consistency.',
+            case3h: 'MC for livestream and in-person events', case3p: '', case3m: 'Outcome: fewer revisions and stronger narrative consistency.',
             video1: 'Live interpretation context sample', video2: 'Nuance and pacing in bilingual delivery', video3: 'Entertainment communication style sample',
             phCompany: 'Company / Studio', phDate: 'Target date / timeframe', phLang: 'Language direction (JP→EN / EN→JP / both)', phBudget: 'Budget range (optional)', phName: 'Your name', phEmail: 'Your email', phBrief: 'Project brief',
             selProject: ['Project type', 'Film / TV', 'Animation', 'Games', 'Press / Interview', 'Other'],
@@ -624,7 +621,7 @@
         document.getElementById('langToggle')?.addEventListener('click', () => setLang(lang === 'en' ? 'ja' : 'en'));
         setLang('en');
 
-        const composeMail = (subject, body) => `mailto:contact.hinano@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        const composeMail = (subject, body) => `mailto:contact@heyhinano.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
         document.getElementById('bookBtn')?.addEventListener('click', () => {
           const subject = lang === 'ja' ? '通訳・翻訳のご相談' : 'Booking Inquiry — Interpretation/Translation';
