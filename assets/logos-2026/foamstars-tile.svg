@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" role="img" aria-label="Foamstars">
+  <rect width="300" height="400" fill="#3a4652"/>
+  <circle cx="60" cy="90" r="46" fill="#ffffff" opacity=".18"/><circle cx="230" cy="150" r="70" fill="#ffffff" opacity=".12"/>
+  <circle cx="110" cy="300" r="90" fill="#ffffff" opacity=".10"/><circle cx="250" cy="340" r="40" fill="#f2c94c" opacity=".55"/>
+  <text x="150" y="215" text-anchor="middle" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" font-size="44" font-weight="700" fill="#ffffff" letter-spacing="2">FOAMSTARS</text>
+  <text x="150" y="245" text-anchor="middle" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" font-size="14" fill="#ffffff" opacity=".7" letter-spacing="3">SQUARE ENIX · 2024</text>
+</svg>

@@ -10,7 +10,7 @@
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Noto+Sans+JP:wght@900&display=swap" rel="stylesheet" />
     <style>
       :root {
         --bg: #ffffff;          /* white */
@@ -19,12 +19,14 @@
         --muted: #6e685f;
         --line: #d6cfc3;
         --line-strong: #b9b0a1;
-        --accent: #ff3b1c;      /* vermilion for the kanji */
+        --accent: #f2c94c;      /* gold for the kanji */
         --wood: #d99c53;        /* timber planks in the photo */
         --slate: #3a4652;       /* curtain-wall glass */
         --rail-w: 96px;
         --gutter: clamp(20px, 5vw, 72px);
         --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+        --font-mono: "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
         --font-jp: "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", "Noto Sans CJK JP", "Helvetica Neue", Helvetica, Arial, sans-serif;
       }
 
@@ -84,8 +86,10 @@
         min-height: 100svh;
         display: flex;
         flex-direction: column;
-        justify-content: flex-end;
-        padding: 120px calc(var(--gutter) + var(--rail-w)) 48px var(--gutter);
+        justify-content: space-between;
+        align-items: stretch;
+        text-align: center;
+        padding: 104px calc(var(--gutter) + var(--rail-w)) 36px var(--gutter);
         overflow: hidden;
         isolation: isolate;
       }
@@ -103,7 +107,7 @@
           repeating-conic-gradient(from 150deg at 108% 46%, var(--line-strong) 0deg 0.22deg, transparent 0.22deg 1.6deg);
         -webkit-mask: radial-gradient(90% 120% at 108% 46%, #000 18%, rgba(0,0,0,.45) 48%, transparent 76%);
                 mask: radial-gradient(90% 120% at 108% 46%, #000 18%, rgba(0,0,0,.45) 48%, transparent 76%);
-        opacity: .9;
+        opacity: .32;
       }
       .hero::after {
         background:
@@ -112,57 +116,47 @@
         -webkit-mask: radial-gradient(95% 125% at 108% 46%, #000 10%, transparent 72%);
                 mask: radial-gradient(95% 125% at 108% 46%, #000 10%, transparent 72%);
       }
-      .hero .plank {
-        position: absolute;
-        z-index: -1;
-        height: 10px;
-        background: var(--wood);
-        border-radius: 1px;
-        opacity: .9;
-      }
-      .hero .plank.a { width: 92px; right: 18%; top: 34%; transform: rotate(-9deg); }
-      .hero .plank.b { width: 58px; right: 12%; top: 58%; transform: rotate(6deg); }
-      .hero .plank.c { width: 130px; right: 26%; top: 70%; transform: rotate(-3deg); }
 
       .hero .meta {
         display: flex;
-        flex-wrap: wrap;
+        justify-content: space-between;
         gap: 10px 26px;
-        margin-bottom: clamp(28px, 6vh, 64px);
+        padding-top: 18px;
+        border-top: 1px solid var(--line);
+        font-family: var(--font-mono);
       }
+      .hero .meta .label { font-family: var(--font-mono); letter-spacing: 0.1em; }
+      .hero .name { display: flex; flex-direction: column; align-items: center; margin: auto 0; }
       .hero h1 {
         margin: 0;
-        font-weight: 700;
-        font-size: clamp(3rem, 11.5vw, 11.5rem);
-        line-height: 0.86;
-        letter-spacing: -0.045em;
+        font-family: var(--font-serif);
+        font-weight: 400;
+        font-size: clamp(3.4rem, 9.6vw, 9rem);
+        line-height: 0.95;
+        letter-spacing: -0.01em;
         text-wrap: balance;
       }
+      .hero .bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        font-size: 14px;
+      }
+      .hero .bottom .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink); }
+      .hero .bottom a:hover { text-decoration: none; color: var(--muted); }
       .hero .kanji {
         font-family: var(--font-jp);
         font-weight: 900;
-        font-size: clamp(2.8rem, 8.6vw, 8.4rem);
+        font-size: clamp(3.2rem, 8.8vw, 8.2rem);
         line-height: 1;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.06em;
         color: var(--accent);
-        -webkit-text-stroke: 0.022em var(--accent);   /* fattens the strokes beyond the font's own black weight */
-        paint-order: stroke fill;
-        margin-left: -0.02em;
       }
-      .hero .kanji-top { margin-bottom: clamp(8px, 1.6vw, 18px); }
-      .hero .kanji-bottom { margin-top: clamp(8px, 1.6vw, 18px); }
+      .hero .kanji-top { margin-bottom: clamp(6px, 1vw, 12px); }
+      .hero .kanji-bottom { margin-top: clamp(6px, 1vw, 12px); }
+      .hero .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: clamp(26px, 4vh, 44px); }
       .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-      .hero .role {
-        margin: clamp(26px, 5vh, 56px) 0 0;
-        display: grid;
-        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-        gap: 24px 48px;
-        align-items: end;
-        padding-top: 22px;
-        border-top: 1px solid var(--ink);
-      }
-      .hero .role p { margin: 0; max-width: 46ch; font-size: clamp(1rem, 1.5vw, 1.25rem); line-height: 1.45; }
-      .hero .role .actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; }
       .btn {
         display: inline-flex;
         align-items: center;
@@ -179,7 +173,7 @@
       }
       .btn:hover { background: var(--ink); color: var(--bg); text-decoration: none; }
       .btn.primary { background: var(--ink); color: var(--bg); }
-      .btn.primary:hover { background: var(--accent); border-color: var(--accent); }
+      .btn.primary:hover { background: var(--accent); border-color: var(--accent); color: var(--ink); }
 
       /* ---------- Generic section ---------- */
       .section {
@@ -270,15 +264,10 @@
       .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
       .partners { display: flex; flex-wrap: wrap; gap: 10px; }
-      .partner {
-        display: inline-flex;
-        align-items: center;
-        height: 68px;
-        padding: 10px 18px;
-        border: 1px solid var(--line);
-        background: #fff;
-      }
-      .partner img { height: 42px; width: auto; max-width: 240px; object-fit: contain; }
+      .partners { gap: 14px 28px; align-items: center; }
+      .partner { display: inline-flex; align-items: center; height: 96px; }
+      .partner img { height: 56px; width: auto; max-width: 260px; object-fit: contain; }
+      .partner img.tall { height: 96px; }
 
       .covers {
         display: grid;
@@ -306,8 +295,7 @@
       .logo-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        border-top: 1px solid var(--line);
-        border-left: 1px solid var(--line);
+        gap: 8px;
       }
       .logo-cell {
         display: flex;
@@ -317,8 +305,6 @@
         gap: 12px;
         min-height: 128px;
         padding: 18px 14px;
-        border-right: 1px solid var(--line);
-        border-bottom: 1px solid var(--line);
         text-align: center;
       }
       .logo-cell .mark {
@@ -456,7 +442,6 @@
         .header .brand .jp { display: none; }
         .header { padding: 14px var(--gutter); }
         body { padding-bottom: 48px; }
-        .hero .plank { display: none; }
         .rail {
           position: fixed;
           top: auto;
@@ -483,11 +468,10 @@
         .rail a.active::after { width: 14px; }
         .year { scroll-margin-top: 72px; }
         .hero { padding-top: 96px; }
-        .hero h1 { font-size: clamp(3rem, 15vw, 11.5rem); }
-        .hero .kanji { font-size: clamp(3rem, 15vw, 9.8rem); }
-        .hero .role { grid-template-columns: 1fr; }
-        .hero .role .actions { justify-content: flex-start; }
-        .about { grid-template-columns: 1fr; }
+        .hero h1 { font-size: clamp(3rem, 13vw, 9rem); }
+        .hero .kanji { font-size: clamp(3rem, 15vw, 8.2rem); }
+        .hero .meta { flex-direction: column; gap: 6px; align-items: flex-start; text-align: left; }
+          .about { grid-template-columns: 1fr; }
         .portrait { max-width: 220px; }
         .clips { grid-template-columns: 1fr; }
         .contact { grid-template-columns: 1fr; }
@@ -531,30 +515,25 @@
     <main id="top">
       <!-- ============ HERO ============ -->
       <section class="hero" aria-label="Introduction">
-        <span class="plank a" aria-hidden="true"></span>
-        <span class="plank b" aria-hidden="true"></span>
-        <span class="plank c" aria-hidden="true"></span>
-
         <div class="meta">
-          <span class="label">Japanese ↔ English Interpreter &amp; Translator</span>
-          <span class="label">Los Angeles</span>
-          <span class="label">Film · TV · Animation · Games · Music · Live events</span>
+          <span class="label">English/Japanese Interpreter &amp; Translator</span>
+          <span class="label">Portfolio — 2026</span>
         </div>
 
-        <div class="kanji kanji-top" lang="ja" aria-hidden="true">秋山</div>
-        <h1>Hinano Akiyama <span class="sr" lang="ja">秋山雛乃</span></h1>
-        <div class="kanji kanji-bottom" lang="ja" aria-hidden="true">雛乃</div>
-
-        <div class="role">
-          <p>
-            Live interpretation, translation, and bilingual production support for studios, publishers, broadcasters, and
-            artists working between Japan and the United States.
-          </p>
+        <div class="name">
+          <div class="kanji kanji-top" lang="ja" aria-hidden="true">秋山</div>
+          <h1>Hinano Akiyama <span class="sr" lang="ja">秋山雛乃</span></h1>
+          <div class="kanji kanji-bottom" lang="ja" aria-hidden="true">雛乃</div>
           <div class="actions">
             <button id="bookBtn" class="btn primary" type="button">Book Hinano</button>
-            <a class="btn" href="https://www.linkedin.com/in/hinano-akiyama/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a class="btn" href="https://www.linkedin.com/in/hinano-akiyama-b7896b56/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
             <a class="btn" href="https://www.mobygames.com/person/1354824/hinano-akiyama/credits/" target="_blank" rel="noopener noreferrer">Game credits</a>
           </div>
+        </div>
+
+        <div class="bottom">
+          <span class="dot" aria-hidden="true"></span>
+          <a href="#work">Explore selected work ↓</a>
         </div>
       </section>
 
@@ -572,15 +551,21 @@
           <article class="entry">
             <div class="num">01</div>
             <div>
-              <h4>Gminus1 — Los Angeles Premiere</h4>
+              <h4>Godzilla Minus One — Los Angeles Premiere</h4>
               <p class="desc">Interpreter for the VFX team at the Los Angeles premiere.</p>
               <dl>
                 <dt>Role</dt><dd>Interpreter, VFX team</dd>
                 <dt>Format</dt><dd>Film premiere · On-site</dd>
+                <dt>With</dt><dd>Sony Pictures</dd>
                 <dt>Year</dt><dd>2026</dd>
               </dl>
             </div>
-            <div class="media"></div>
+            <div class="media">
+              <div class="partners" aria-label="Partners">
+                <span class="partner"><img class="tall" src="/assets/logos-2026/godzilla-minus-one.png" alt="Godzilla Minus One" loading="lazy" /></span>
+                <span class="partner"><img class="tall" src="/assets/logos-2026/sony-pictures.png" alt="Sony Pictures" loading="lazy" /></span>
+              </div>
+            </div>
           </article>
 
           <article class="entry">
@@ -596,7 +581,7 @@
             </div>
             <div class="media">
               <div class="video">
-                <iframe src="https://www.youtube-nocookie.com/embed/QdNmVWXuYec?si=33pVCvXI-uCr5dgl&amp;start=6624" title="Final Fantasy VII Revelations announcement at Summer Game Fest 2026" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/QdNmVWXuYec?si=LQ94TgilLjdNwGmh&amp;start=6623" title="Final Fantasy VII Revelations announcement at Summer Game Fest 2026" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
               </div>
             </div>
           </article>
@@ -640,7 +625,7 @@
             <div class="media">
               <div class="partners" aria-label="Partners">
                 <span class="partner"><img src="/assets/logos-2026/weftec.png" alt="WEFTEC" loading="lazy" /></span>
-                <span class="partner"><img src="/assets/logos-2026/tokyo-sewerage.svg" alt="Tokyo Metropolitan Government Bureau of Sewerage" loading="lazy" /></span>
+                <span class="partner"><img src="/assets/logos-2026/tokyo-metropolitan-government.png" alt="Tokyo Metropolitan Government" loading="lazy" /></span>
               </div>
             </div>
           </article>
@@ -648,7 +633,7 @@
 
         <!-- 2025 -->
         <div class="year" id="y2025" data-year-section>
-          <div class="year-head"><h3>2025</h3><span class="count">Game credits</span></div>
+          <div class="year-head"><h3>2025</h3><span class="count">Game credits · Interpretation clips</span></div>
           <article class="entry">
             <div class="num">01</div>
             <div>
@@ -669,6 +654,25 @@
                   <img src="https://cdn.mobygames.com/covers/20469872-octopath-traveler-0-windows-front-cover.jpg" alt="Octopath Traveler 0 cover" loading="lazy" />
                   <span>Octopath Traveler 0</span>
                 </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry">
+            <div class="num">02</div>
+            <div>
+              <h4>Selected interpretation clips</h4>
+              <p class="desc">Live interpretation for interviews, panels, and livestreams.</p>
+              <dl>
+                <dt>Role</dt><dd>Interpreter · MC</dd>
+                <dt>Format</dt><dd>Interviews · Livestreams · Events</dd>
+              </dl>
+            </div>
+            <div class="media">
+              <div class="clips">
+                <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/Zqv8XOR_Tw4" title="Interpretation clip 1" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+                <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/iSoelj2mk_w" title="Interpretation clip 2" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+                <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/ARPUhj-bKXI" title="Interpretation clip 3" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
               </div>
             </div>
           </article>
@@ -702,7 +706,7 @@
                   <span>SaGa: Emerald Beyond</span>
                 </a>
                 <a class="cover" href="https://www.mobygames.com/game/217170/foamstars/" target="_blank" rel="noopener noreferrer">
-                  <img src="https://imguscdn.gamespress.com/cdn/files/Square-Enix/2023/05/242034-767e6cd1/FOAMSTARS_Art_png_jpgcopy.jpg" alt="Foamstars key art" loading="lazy" />
+                  <img src="/assets/logos-2026/foamstars-tile.svg" alt="Foamstars" loading="lazy" />
                   <span>Foamstars</span>
                 </a>
               </div>
@@ -740,29 +744,11 @@
 
         <!-- Earlier -->
         <div class="year" id="yearlier" data-year-section>
-          <div class="year-head"><h3>Earlier</h3><span class="count">Interpretation clips · Game credits</span></div>
+          <div class="year-head"><h3>Earlier</h3><span class="count">Game credits</span></div>
+
 
           <article class="entry">
             <div class="num">01</div>
-            <div>
-              <h4>Selected interpretation clips</h4>
-              <p class="desc">Live interpretation for interviews, panels, and livestreams.</p>
-              <dl>
-                <dt>Role</dt><dd>Interpreter · MC</dd>
-                <dt>Format</dt><dd>Interviews · Livestreams · Events</dd>
-              </dl>
-            </div>
-            <div class="media">
-              <div class="clips">
-                <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/Zqv8XOR_Tw4" title="Interpretation clip 1" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
-                <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/iSoelj2mk_w" title="Interpretation clip 2" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
-                <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/ARPUhj-bKXI" title="Interpretation clip 3" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
-              </div>
-            </div>
-          </article>
-
-          <article class="entry">
-            <div class="num">02</div>
             <div>
               <h4>Square Enix titles</h4>
               <p class="desc">Earlier credited titles.</p>
@@ -818,7 +804,7 @@
           <div class="logo-cell"><div class="mark"><img src="/assets/clients-real/sony.ico" alt="Sony" loading="lazy" /></div><span>Sony</span></div>
           <div class="logo-cell"><div class="mark"><img src="/assets/logos-2026/mrsgreenapple.png" alt="Mrs. GREEN APPLE" loading="lazy" /></div><span>Mrs. GREEN APPLE</span></div>
           <div class="logo-cell"><div class="mark"><img src="/assets/logos-2026/fujitv.png" alt="Fuji TV" loading="lazy" /></div><span>Fuji TV</span></div>
-          <div class="logo-cell"><div class="mark"><img src="/assets/logos-2026/tokyo-mark.svg" alt="Tokyo Metropolitan Government Bureau of Sewerage" loading="lazy" /></div><span>Tokyo Metropolitan Government, Bureau of Sewerage</span></div>
+          <div class="logo-cell"><div class="mark"><img class="wide" src="/assets/logos-2026/tokyo-metropolitan-government.png" alt="Tokyo Metropolitan Government" loading="lazy" /></div><span>Tokyo Metropolitan Government, Bureau of Sewerage</span></div>
           <div class="logo-cell"><div class="mark"><img class="wide" src="/assets/logos-2026/weftec.png" alt="WEFTEC" loading="lazy" /></div><span>WEFTEC</span></div>
           <div class="logo-cell"><div class="mark"><img src="/assets/clients-real/nyfa.png" alt="New York Film Academy" loading="lazy" /></div><span>New York Film Academy</span></div>
           <div class="logo-cell"><div class="mark"><img src="/assets/clients-real/artcenter.png" alt="ArtCenter College of Design" loading="lazy" /></div><span>ArtCenter College of Design</span></div>
@@ -868,7 +854,7 @@
             <p class="big">Let's talk about your project.</p>
             <div class="links">
               <a href="mailto:contact@heyhinano.com">contact@heyhinano.com</a>
-              <a href="https://www.linkedin.com/in/hinano-akiyama/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              <a href="https://www.linkedin.com/in/hinano-akiyama-b7896b56/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
               <a href="https://www.mobygames.com/person/1354824/hinano-akiyama/credits/" target="_blank" rel="noopener noreferrer">MobyGames credits</a>
             </div>
           </div>
