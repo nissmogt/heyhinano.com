@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 120" role="img" aria-label="Tokyo Metropolitan Government Bureau of Sewerage">
+  <title>Tokyo Metropolitan Government Bureau of Sewerage</title>
+  <g transform="translate(60 60)" fill="#00a63f">
+    <g id="leaf">
+      <path d="M0 0 C 6 -18 18 -34 30 -46 C 42 -36 50 -22 52 -8 C 44 -2 22 2 0 0 Z"/>
+    </g>
+    <use href="#leaf" transform="rotate(120)"/>
+    <use href="#leaf" transform="rotate(240)"/>
+    <circle r="7"/>
+  </g>
+  <g font-family="'Hiragino Sans','Yu Gothic','Noto Sans JP','Helvetica Neue',Helvetica,Arial,sans-serif" fill="#1a1a1a">
+    <text x="130" y="58" font-size="34" font-weight="700" letter-spacing="2">東京都下水道局</text>
+    <text x="131" y="88" font-size="15" font-weight="500" letter-spacing="1.5" fill="#555">BUREAU OF SEWERAGE · TOKYO METROPOLITAN GOVERNMENT</text>
+  </g>
+</svg>
