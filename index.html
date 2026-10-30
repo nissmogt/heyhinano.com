@@ -8,10 +8,13 @@
       name="description"
       content="Hinano Akiyama is a Los Angeles-based Japanese–English interpreter and translator for film, TV, animation, games, music, and live events. Selected work by year, press, clients, and booking."
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@900&display=swap" rel="stylesheet" />
     <style>
       :root {
-        --bg: #f4f1eb;          /* travertine white */
-        --bg-2: #ebe6dd;        /* shadowed stone   */
+        --bg: #ffffff;          /* white */
+        --bg-2: #f1eee8;        /* shadowed stone   */
         --ink: #151515;
         --muted: #6e685f;
         --line: #d6cfc3;
@@ -22,7 +25,7 @@
         --rail-w: 96px;
         --gutter: clamp(20px, 5vw, 72px);
         --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        --font-jp: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", "Noto Sans CJK JP", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        --font-jp: "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", "Noto Sans CJK JP", "Helvetica Neue", Helvetica, Arial, sans-serif;
       }
 
       * { box-sizing: border-box; }
@@ -64,7 +67,7 @@
         border-bottom: 1px solid transparent;
       }
       .header.scrolled {
-        background: rgba(244, 241, 235, 0.86);
+        background: rgba(255, 255, 255, 0.86);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         border-bottom-color: var(--line);
@@ -136,14 +139,19 @@
         text-wrap: balance;
       }
       .hero .kanji {
-        margin: clamp(10px, 2vw, 22px) 0 0 -0.04em;
         font-family: var(--font-jp);
         font-weight: 900;
-        font-size: clamp(2.6rem, 9.5vw, 9.4rem);
+        font-size: clamp(2.8rem, 8.6vw, 8.4rem);
         line-height: 1;
-        letter-spacing: 0.02em;
+        letter-spacing: 0.04em;
         color: var(--accent);
+        -webkit-text-stroke: 0.022em var(--accent);   /* fattens the strokes beyond the font's own black weight */
+        paint-order: stroke fill;
+        margin-left: -0.02em;
       }
+      .hero .kanji-top { margin-bottom: clamp(8px, 1.6vw, 18px); }
+      .hero .kanji-bottom { margin-top: clamp(8px, 1.6vw, 18px); }
+      .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
       .hero .role {
         margin: clamp(26px, 5vh, 56px) 0 0;
         display: grid;
@@ -445,6 +453,8 @@
       @media (max-width: 900px) {
         :root { --rail-w: 0px; }
         .header nav { display: none; }
+        .header .brand .jp { display: none; }
+        .header { padding: 14px var(--gutter); }
         body { padding-bottom: 48px; }
         .hero .plank { display: none; }
         .rail {
@@ -459,7 +469,7 @@
           gap: 18px;
           padding: 10px var(--gutter);
           overflow-x: auto;
-          background: rgba(244, 241, 235, 0.92);
+          background: rgba(255, 255, 255, 0.92);
           backdrop-filter: blur(10px);
           -webkit-backdrop-filter: blur(10px);
           border-top: 1px solid var(--line);
@@ -474,7 +484,7 @@
         .year { scroll-margin-top: 72px; }
         .hero { padding-top: 96px; }
         .hero h1 { font-size: clamp(3rem, 15vw, 11.5rem); }
-        .hero .kanji { font-size: clamp(2.6rem, 13vw, 9.4rem); }
+        .hero .kanji { font-size: clamp(3rem, 15vw, 9.8rem); }
         .hero .role { grid-template-columns: 1fr; }
         .hero .role .actions { justify-content: flex-start; }
         .about { grid-template-columns: 1fr; }
@@ -499,7 +509,7 @@
   </head>
   <body>
     <header class="header" id="header">
-      <a class="brand" href="#top">Hinano Akiyama <span class="jp" lang="ja">秋山ひなの</span></a>
+      <a class="brand" href="#top">Hinano Akiyama <span class="jp" lang="ja">秋山雛乃</span></a>
       <nav aria-label="Primary">
         <a href="#work">Work</a>
         <a href="#press">Press</a>
@@ -531,8 +541,9 @@
           <span class="label">Film · TV · Animation · Games · Music · Live events</span>
         </div>
 
-        <h1>Hinano Akiyama</h1>
-        <div class="kanji" lang="ja">秋山ひなの</div>
+        <div class="kanji kanji-top" lang="ja" aria-hidden="true">秋山</div>
+        <h1>Hinano Akiyama <span class="sr" lang="ja">秋山雛乃</span></h1>
+        <div class="kanji kanji-bottom" lang="ja" aria-hidden="true">雛乃</div>
 
         <div class="role">
           <p>
@@ -887,7 +898,7 @@
       </section>
 
       <footer class="footer">
-        <span>© <span id="year"></span> Hinano Akiyama <span lang="ja">秋山ひなの</span></span>
+        <span>© <span id="year"></span> Hinano Akiyama <span lang="ja">秋山雛乃</span></span>
         <span>Japanese ↔ English Interpreter &amp; Translator · Los Angeles</span>
       </footer>
     </main>
