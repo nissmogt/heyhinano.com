@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+    <title>Hinano Akiyama | Japanese–English Interpreter, Los Angeles</title>
+    <meta name="description" content="Hinano Akiyama is a Los Angeles-based Japanese–English interpreter for film, TV, music, games, and live events. Selected interpretation work, press, clients, and booking." />
+    <meta name="robots" content="noindex" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Noto+Sans+JP:wght@900&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #ffffff;
+        --paper: #f6f3ee;
+        --ink: #141414;
+        --muted: #6e685f;
+        --line: #d8d2c7;
+        --gold: #f2c94c;
+        --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+        --jp: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+        --gutter: clamp(20px, 5vw, 72px);
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+      a { color: inherit; text-decoration: none; }
+      img { display: block; }
+      button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+      .label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+      .serif { font-family: var(--serif); font-weight: 400; letter-spacing: -0.01em; }
+      .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+      /* ---------- Header + menu ---------- */
+      .header {
+        position: fixed; inset: 0 0 auto 0; z-index: 60;
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 20px var(--gutter);
+        color: #fff; mix-blend-mode: difference;
+        transition: color .3s ease;
+      }
+      .header.solid { mix-blend-mode: normal; color: var(--ink); background: rgba(255,255,255,.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+      .brand { display: flex; align-items: baseline; gap: 12px; font-family: var(--serif); font-size: 22px; }
+      .brand .jp { font-family: var(--jp); font-weight: 900; font-size: 14px; color: var(--gold); letter-spacing: .08em; }
+      .menu-btn { display: inline-flex; align-items: center; gap: 12px; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; }
+      .menu-btn .bars { width: 26px; height: 10px; position: relative; }
+      .menu-btn .bars::before, .menu-btn .bars::after { content: ""; position: absolute; left: 0; right: 0; height: 1px; background: currentColor; transition: transform .3s ease, top .3s ease; }
+      .menu-btn .bars::before { top: 0; } .menu-btn .bars::after { top: 9px; }
+      .header.open .menu-btn .bars::before { top: 4px; transform: rotate(45deg); }
+      .header.open .menu-btn .bars::after { top: 4px; transform: rotate(-45deg); }
+
+      .menu {
+        position: fixed; top: 0; right: 0; z-index: 55;
+        width: min(360px, 100vw); height: 100vh;
+        background: var(--paper); border-left: 1px solid var(--line);
+        padding: 110px var(--gutter) 40px;
+        display: flex; flex-direction: column; gap: 6px;
+        transform: translateX(100%); transition: transform .45s cubic-bezier(.22,.8,.3,1);
+      }
+      .menu.open { transform: none; }
+      .menu > a { font-family: var(--serif); font-size: 2.2rem; line-height: 1.1; padding: 14px 0; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 2px; transition: padding .25s ease; }
+      .menu > a small { font-family: var(--font); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+      .menu > a:hover { padding-left: 8px; }
+      .menu .foot { margin-top: auto; font-size: 13px; color: var(--muted); display: grid; gap: 4px; }
+      .scrim { position: fixed; inset: 0; z-index: 50; background: rgba(20,20,20,.25); opacity: 0; pointer-events: none; transition: opacity .35s ease; }
+      .scrim.open { opacity: 1; pointer-events: auto; }
+
+      /* ---------- Hero photo carousel ---------- */
+      .hero { position: relative; height: 100svh; min-height: 560px; overflow: hidden; background: #111; color: #fff; }
+      .hero .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.4s ease; }
+      .hero .slide img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.04); transition: transform 7s linear; }
+      .hero .slide.on { opacity: 1; }
+      .hero .slide.on img { transform: scale(1.12); }
+      .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,.55) 100%); pointer-events: none; }
+      .hero .text { position: absolute; z-index: 2; left: var(--gutter); right: var(--gutter); bottom: clamp(36px, 7vh, 72px); display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+      .hero h1 { margin: 0; font-family: var(--serif); font-size: clamp(3rem, 8vw, 7.2rem); line-height: .95; letter-spacing: -0.015em; text-shadow: 0 2px 30px rgba(0,0,0,.35); }
+      .hero .kanji { font-family: var(--jp); font-weight: 900; color: var(--gold); font-size: clamp(1.1rem, 2vw, 1.6rem); letter-spacing: .3em; margin-bottom: 14px; }
+      .hero .tag { margin-top: 16px; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; opacity: .9; }
+      .hero .caption { text-align: right; font-size: 13px; line-height: 1.5; max-width: 32ch; opacity: .92; }
+      .hero .caption .label { color: rgba(255,255,255,.7); display: block; margin-bottom: 4px; }
+      .hero .dots { position: absolute; z-index: 2; left: 50%; bottom: 16px; transform: translateX(-50%); display: flex; gap: 8px; }
+      .hero .dots button { width: 28px; height: 2px; background: rgba(255,255,255,.35); transition: background .3s ease; }
+      .hero .dots button.on { background: #fff; }
+      .hero .arrow { position: absolute; z-index: 2; top: 50%; transform: translateY(-50%); width: 56px; height: 56px; display: grid; place-items: center; color: #fff; font-size: 28px; opacity: .7; transition: opacity .2s ease; }
+      .hero .arrow:hover { opacity: 1; }
+      .hero .arrow.prev { left: 8px; } .hero .arrow.next { right: 8px; }
+
+      /* ---------- Sections ---------- */
+      .section { padding: clamp(64px, 10vh, 128px) var(--gutter) 0; }
+      .section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--ink); margin-bottom: 32px; }
+      .section-head h2 { margin: 0; font-family: var(--serif); font-size: clamp(2rem, 4.5vw, 3.4rem); line-height: 1; }
+
+      /* ---------- Work carousel ---------- */
+      .work-wrap { position: relative; margin: 0 calc(-1 * var(--gutter)); }
+      .track {
+        display: flex; gap: clamp(16px, 2.5vw, 36px);
+        overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
+        padding: 0 var(--gutter) 12px; scrollbar-width: none;
+      }
+      .track::-webkit-scrollbar { display: none; }
+      .work { flex: 0 0 min(78vw, 920px); scroll-snap-align: center; }
+      .frame { position: relative; aspect-ratio: 16 / 9; background: #1d222a; overflow: hidden; cursor: pointer; }
+      .frame img.thumb { width: 100%; height: 100%; object-fit: cover; transition: transform .8s ease, filter .4s ease; }
+      .frame:hover img.thumb { transform: scale(1.03); }
+      .frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+      .frame .logos { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: clamp(24px, 5vw, 64px); background: var(--paper); padding: 10%; }
+      .frame .logos img { max-height: 120px; max-width: 32%; object-fit: contain; }
+      .frame .logos img.tall { max-height: 180px; }
+      .play {
+        position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+        width: 72px; height: 72px; border-radius: 50%; background: rgba(255,255,255,.92); color: var(--ink);
+        display: grid; place-items: center; transition: transform .25s ease, background .25s ease;
+      }
+      .play::after { content: ""; border-style: solid; border-width: 11px 0 11px 18px; border-color: transparent transparent transparent currentColor; margin-left: 4px; }
+      .frame:hover .play { transform: translate(-50%, -50%) scale(1.06); background: #fff; }
+
+      /* gallery placard: appears on the right when hovering, hidden when playing */
+      .placard {
+        position: absolute; right: clamp(16px, 3%, 32px); top: 50%; transform: translate(14px, -50%);
+        width: min(300px, 44%); padding: 22px 22px 18px;
+        background: rgba(255,255,255,.96); color: var(--ink); border-left: 3px solid var(--gold);
+        box-shadow: 0 20px 50px rgba(0,0,0,.25);
+        opacity: 0; transition: opacity .35s ease, transform .35s ease; pointer-events: none;
+      }
+      .frame:hover .placard { opacity: 1; transform: translate(0, -50%); }
+      .placard h3 { margin: 0 0 6px; font-family: var(--serif); font-size: 1.5rem; line-height: 1.1; }
+      .placard p { margin: 0 0 12px; font-size: 13.5px; line-height: 1.5; color: #333; }
+      .placard dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; font-size: 12px; }
+      .placard dt { color: var(--muted); } .placard dd { margin: 0; }
+      .placard .hint { display: block; margin-top: 12px; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+      .frame.playing .placard, .frame.playing .play, .frame.dismissed .placard { opacity: 0; pointer-events: none; }
+      .frame.playing { cursor: default; }
+      .work .under { display: flex; justify-content: space-between; gap: 12px; margin-top: 12px; font-size: 13px; }
+      .work .under strong { font-weight: 500; }
+      .work .under span { color: var(--muted); }
+      @media (hover: none) { .placard { opacity: 1; transform: translate(0, -50%); } }
+
+      .work-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; }
+      .work-nav .count { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+      .work-nav .btns { display: flex; gap: 8px; }
+      .work-nav button { width: 48px; height: 48px; border: 1px solid var(--ink); border-radius: 50%; display: grid; place-items: center; font-size: 20px; transition: background .2s ease, color .2s ease; }
+      .work-nav button:hover { background: var(--ink); color: #fff; }
+
+      /* ---------- Press / Clients ---------- */
+      .logo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+      .logo-cell { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; min-height: 124px; padding: 18px 14px; text-align: center; }
+      .logo-cell .mark { height: 40px; width: 100%; display: flex; align-items: center; justify-content: center; }
+      .logo-cell img { max-height: 40px; max-width: 120px; width: auto; height: auto; object-fit: contain; }
+      .logo-cell img.wide { max-width: 130px; }
+      .logo-cell span { font-size: 12px; color: var(--muted); line-height: 1.3; }
+
+      /* ---------- About ---------- */
+      .about { display: grid; grid-template-columns: minmax(0, 320px) minmax(0, 1fr); gap: 32px clamp(24px, 5vw, 80px); align-items: start; }
+      .portrait { width: 100%; max-width: 320px; aspect-ratio: 4 / 5; object-fit: cover; background: var(--paper); }
+      .about .lede { margin: 0 0 28px; font-family: var(--serif); font-size: clamp(1.5rem, 2.6vw, 2.2rem); line-height: 1.25; max-width: 28ch; }
+      .services { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+      .services li { display: grid; grid-template-columns: minmax(0, 240px) minmax(0, 1fr); gap: 8px 24px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+      .services li span { color: var(--muted); font-size: 14px; }
+      .facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+      .facts span { border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; font-size: 12px; }
+
+      /* ---------- Contact ---------- */
+      .contact { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 32px clamp(24px, 5vw, 80px); }
+      .contact .big { margin: 0 0 20px; font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.4rem); line-height: 1; }
+      .contact .links { display: grid; gap: 8px; font-size: 14px; }
+      .btn { display: inline-flex; align-items: center; padding: 12px 18px; border: 1px solid var(--ink); border-radius: 999px; font-size: 13px; letter-spacing: .02em; transition: background .18s ease, color .18s ease; }
+      .btn:hover { background: var(--ink); color: #fff; }
+      .btn.primary { background: var(--ink); color: #fff; } .btn.primary:hover { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+      .form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .form .full { grid-column: 1 / -1; }
+      .form input, .form textarea, .form select { width: 100%; font: inherit; color: var(--ink); background: transparent; border: 0; border-bottom: 1px solid var(--line); padding: 10px 0; border-radius: 0; outline: none; }
+      .form input:focus, .form textarea:focus, .form select:focus { border-bottom-color: var(--ink); }
+      .form .note { font-size: 12px; color: var(--muted); }
+      .footer { margin-top: clamp(64px, 10vh, 128px); padding: 22px var(--gutter); border-top: 1px solid var(--ink); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--muted); }
+
+      @media (max-width: 900px) {
+        .about, .contact { grid-template-columns: 1fr; }
+        .portrait { max-width: 240px; }
+        .hero .text { flex-direction: column; align-items: flex-start; }
+        .hero .caption { text-align: left; }
+        .work { flex-basis: 86vw; }
+        .work .placard, .frame.playing + .placard { position: static; transform: none; opacity: 1; pointer-events: auto; width: auto; box-shadow: none; background: var(--paper); padding: 14px 16px; margin-top: 10px; }
+        .placard .hint { display: none; }
+        .services li { grid-template-columns: 1fr; }
+        .form { grid-template-columns: 1fr; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .hero .slide, .hero .slide img, .placard, .menu { transition: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header" id="header">
+      <a class="brand" href="#top">Hinano Akiyama <span class="jp" lang="ja">秋山雛乃</span></a>
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu"><span>Menu</span><span class="bars" aria-hidden="true"></span></button>
+    </header>
+    <div class="scrim" id="scrim"></div>
+    <nav class="menu" id="menu" aria-label="Site menu">
+      <a href="#projects">Projects <small>Interpretation</small></a>
+      <a href="#about">About <small>Services</small></a>
+      <a href="#press">Press <small>Featured in</small></a>
+      <a href="#contact">Contact <small>Book</small></a>
+      <div class="foot">
+        <a href="mailto:contact@heyhinano.com">contact@heyhinano.com</a>
+        <a href="https://www.linkedin.com/in/hinano-akiyama-b7896b56/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <span>Los Angeles</span>
+      </div>
+    </nav>
+
+    <main id="top">
+      <!-- ============ HERO: rotating event photos ============ -->
+      <section class="hero" id="hero" aria-label="Event photos">
+        <!-- Slides are generated from the PHOTOS list in the script below. -->
+        <button class="arrow prev" id="heroPrev" aria-label="Previous photo">←</button>
+        <button class="arrow next" id="heroNext" aria-label="Next photo">→</button>
+        <div class="text">
+          <div>
+            <div class="kanji" lang="ja">秋山雛乃</div>
+            <h1>Hinano Akiyama</h1>
+            <div class="tag">Japanese ↔ English Interpreter · Los Angeles</div>
+          </div>
+          <div class="caption" id="heroCaption"></div>
+        </div>
+        <div class="dots" id="heroDots" role="tablist" aria-label="Choose photo"></div>
+      </section>
+
+      <!-- ============ PROJECTS: interpretation carousel ============ -->
+      <section class="section" id="projects" aria-labelledby="projects-title">
+        <div class="section-head">
+          <h2 id="projects-title">Interpretation</h2>
+          <span class="label">Hover for details · Click to play</span>
+        </div>
+        <div class="work-wrap">
+          <div class="track" id="track">
+
+            <article class="work">
+              <div class="frame" data-video="QdNmVWXuYec" data-start="6623" tabindex="0" role="button" aria-label="Play: Final Fantasy VII Revelations at Summer Game Fest 2026">
+                <img class="thumb" src="https://i.ytimg.com/vi/QdNmVWXuYec/maxresdefault.jpg" alt="" loading="lazy" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/QdNmVWXuYec/hqdefault.jpg'" />
+                <span class="play" aria-hidden="true"></span>
+                <aside class="placard">
+                  <h3>Final Fantasy VII Revelations</h3>
+                  <p>Announcement on the Summer Game Fest 2026 stage.</p>
+                  <dl><dt>Role</dt><dd>Interpretation</dd><dt>Format</dt><dd>Live stage</dd><dt>Year</dt><dd>2026</dd></dl>
+                  <span class="hint">Click to play</span>
+                </aside>
+              </div>
+              <div class="under"><strong>Summer Game Fest 2026</strong><span>Live stage announcement</span></div>
+            </article>
+
+            <article class="work">
+              <div class="frame" data-video="B1ph-GI8BNo" data-start="47" tabindex="0" role="button" aria-label="Play: Mrs. GREEN APPLE on the Zach Sang Show">
+                <img class="thumb" src="https://i.ytimg.com/vi/B1ph-GI8BNo/maxresdefault.jpg" alt="" loading="lazy" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/B1ph-GI8BNo/hqdefault.jpg'" />
+                <span class="play" aria-hidden="true"></span>
+                <aside class="placard">
+                  <h3>Mrs. GREEN APPLE on the Zach Sang Show</h3>
+                  <p>Interpretation for the band's interview, with Fuji TV.</p>
+                  <dl><dt>Role</dt><dd>Interpreter</dd><dt>Format</dt><dd>Broadcast interview</dd><dt>With</dt><dd>Mrs. GREEN APPLE · Fuji TV</dd><dt>Year</dt><dd>2026</dd></dl>
+                  <span class="hint">Click to play</span>
+                </aside>
+              </div>
+              <div class="under"><strong>Zach Sang Show</strong><span>Mrs. GREEN APPLE · Fuji TV</span></div>
+            </article>
+
+            <article class="work">
+              <div class="frame still" tabindex="0" role="button" aria-label="Godzilla Minus One, Los Angeles premiere">
+                <div class="logos">
+                  <img class="tall" src="/assets/logos-2026/godzilla-minus-one.png" alt="Godzilla Minus One" loading="lazy" />
+                  <img class="tall" src="/assets/logos-2026/sony-pictures.png" alt="Sony Pictures" loading="lazy" />
+                </div>
+                <aside class="placard">
+                  <h3>Godzilla Minus One</h3>
+                  <p>Interpreter for the VFX team at the Los Angeles premiere.</p>
+                  <dl><dt>Role</dt><dd>Interpreter, VFX team</dd><dt>Format</dt><dd>Film premiere</dd><dt>With</dt><dd>Sony Pictures</dd><dt>Year</dt><dd>2026</dd></dl>
+                </aside>
+              </div>
+              <div class="under"><strong>Godzilla Minus One</strong><span>Los Angeles premiere</span></div>
+            </article>
+
+            <article class="work">
+              <div class="frame still" tabindex="0" role="button" aria-label="WEFTEC 2026 for the Tokyo Metropolitan Government Bureau of Sewerage">
+                <div class="logos">
+                  <img src="/assets/logos-2026/weftec.png" alt="WEFTEC" loading="lazy" />
+                  <img src="/assets/logos-2026/tokyo-metropolitan-government.png" alt="Tokyo Metropolitan Government" loading="lazy" />
+                </div>
+                <aside class="placard">
+                  <h3>WEFTEC 2026</h3>
+                  <p>Technical interpretation for the Tokyo Metropolitan Government Bureau of Sewerage.</p>
+                  <dl><dt>Role</dt><dd>Interpreter</dd><dt>Format</dt><dd>Conference</dd><dt>Year</dt><dd>2026</dd></dl>
+                </aside>
+              </div>
+              <div class="under"><strong>WEFTEC 2026</strong><span>Tokyo Metropolitan Government</span></div>
+            </article>
+
+            <article class="work">
+              <div class="frame" data-video="Zqv8XOR_Tw4" tabindex="0" role="button" aria-label="Play interpretation clip">
+                <img class="thumb" src="https://i.ytimg.com/vi/Zqv8XOR_Tw4/maxresdefault.jpg" alt="" loading="lazy" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/Zqv8XOR_Tw4/hqdefault.jpg'" />
+                <span class="play" aria-hidden="true"></span>
+                <aside class="placard">
+                  <h3>Live interpretation</h3>
+                  <p>Interview and panel interpretation for Japanese and English audiences.</p>
+                  <dl><dt>Role</dt><dd>Interpreter</dd><dt>Format</dt><dd>Interview</dd></dl>
+                  <span class="hint">Click to play</span>
+                </aside>
+              </div>
+              <div class="under"><strong>Interview interpretation</strong><span>Selected clip</span></div>
+            </article>
+
+            <article class="work">
+              <div class="frame" data-video="iSoelj2mk_w" tabindex="0" role="button" aria-label="Play interpretation clip">
+                <img class="thumb" src="https://i.ytimg.com/vi/iSoelj2mk_w/maxresdefault.jpg" alt="" loading="lazy" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/iSoelj2mk_w/hqdefault.jpg'" />
+                <span class="play" aria-hidden="true"></span>
+                <aside class="placard">
+                  <h3>Live interpretation</h3>
+                  <p>Pacing and nuance in bilingual delivery.</p>
+                  <dl><dt>Role</dt><dd>Interpreter</dd><dt>Format</dt><dd>Livestream</dd></dl>
+                  <span class="hint">Click to play</span>
+                </aside>
+              </div>
+              <div class="under"><strong>Livestream interpretation</strong><span>Selected clip</span></div>
+            </article>
+
+            <article class="work">
+              <div class="frame" data-video="ARPUhj-bKXI" tabindex="0" role="button" aria-label="Play interpretation clip">
+                <img class="thumb" src="https://i.ytimg.com/vi/ARPUhj-bKXI/maxresdefault.jpg" alt="" loading="lazy" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/ARPUhj-bKXI/hqdefault.jpg'" />
+                <span class="play" aria-hidden="true"></span>
+                <aside class="placard">
+                  <h3>Live interpretation</h3>
+                  <p>On-stage interpretation and bilingual MC work.</p>
+                  <dl><dt>Role</dt><dd>Interpreter · MC</dd><dt>Format</dt><dd>Event</dd></dl>
+                  <span class="hint">Click to play</span>
+                </aside>
+              </div>
+              <div class="under"><strong>Event interpretation</strong><span>Selected clip</span></div>
+            </article>
+
+          </div>
+        </div>
+        <div class="work-nav">
+          <span class="count" id="workCount"></span>
+          <div class="btns">
+            <button id="workPrev" aria-label="Previous project">←</button>
+            <button id="workNext" aria-label="Next project">→</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ABOUT ============ -->
+      <section class="section" id="about" aria-labelledby="about-title">
+        <div class="section-head"><h2 id="about-title">About</h2><span class="label">Services</span></div>
+        <div class="about">
+          <img class="portrait" src="https://unavatar.io/x/giraffarama" alt="Hinano Akiyama" loading="lazy" />
+          <div>
+            <p class="lede">Japanese ↔ English interpreter based in Los Angeles, working across film, television, music, games, and live events.</p>
+            <ul class="services">
+              <li><strong>Live interpretation</strong><span>On-set, studio, interview, press, panel, stage, and meeting interpretation for Japanese–English teams.</span></li>
+              <li><strong>Press, broadcast &amp; interviews</strong><span>Interpretation for artists, directors, and producers in media interviews and broadcast segments.</span></li>
+              <li><strong>Premieres, stages &amp; conferences</strong><span>On-site interpretation for premieres, announcements, technical conferences, and trade shows.</span></li>
+              <li><strong>Bilingual MC &amp; hosting</strong><span>Bilingual MC for livestreams and in-person events.</span></li>
+            </ul>
+            <div class="facts"><span>Based in Los Angeles</span><span>On-site / Remote</span><span>Entertainment-focused</span><span>Response within 24h</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ PRESS ============ -->
+      <section class="section" id="press" aria-labelledby="press-title">
+        <div class="section-head"><h2 id="press-title">Interpretation featured in</h2><span class="label">Press &amp; broadcast</span></div>
+        <div class="logo-grid">
+          <div class="logo-cell"><div class="mark"><img src="/assets/logos/nytimes.png" alt="The New York Times" loading="lazy" /></div><span>The New York Times</span></div>
+          <div class="logo-cell"><div class="mark"><img src="/assets/logos/npr.png" alt="NPR" loading="lazy" /></div><span>NPR</span></div>
+          <div class="logo-cell"><div class="mark"><img src="/assets/logos/bloomberg.png" alt="Bloomberg" loading="lazy" /></div><span>Bloomberg</span></div>
+          <div class="logo-cell"><div class="mark"><img src="/assets/logos/variety.png" alt="Variety" loading="lazy" /></div><span>Variety</span></div>
+          <div class="logo-cell"><div class="mark"><img src="/assets/logos/rollingstone.png" alt="Rolling Stone" loading="lazy" /></div><span>Rolling Stone</span></div>
+          <div class="logo-cell"><div class="mark"><img src="/assets/logos/gq.png" alt="GQ" loading="lazy" /></div><span>GQ</span></div>
+          <div class="logo-cell"><div class="mark"><img src="/assets/logos/cnet.png" alt="CNET" loading="lazy" /></div><span>CNET</span></div>
+          <div class="logo-cell"><div class="mark"><img src="/assets/logos/gameinformer.png" alt="Game Informer" loading="lazy" /></div><span>Game Informer</span></div>
+          <div class="logo-cell"><div class="mark"><img src="/assets/logos-2026/zachsang.png" alt="Zach Sang Show" loading="lazy" /></div><span>Zach Sang Show</span></div>
+          <div class="logo-cell"><div class="mark"><img src="/assets/logos-2026/fujitv.png" alt="Fuji TV" loading="lazy" /></div><span>Fuji TV</span></div>
+        </div>
+      </section>
+
+      <!-- ============ CLIENTS ============ -->
+      <section class="section" id="clients" aria-labelledby="clients-title">
+        <div class="section-head"><h2 id="clients-title">Selected clients</h2><span class="label">Studios · Broadcasters · Institutions</span></div>
+        <div class="logo-grid">
+          <div class="logo-cell"><div class="mark"><img src="/assets/clients-real/warnerbros.ico" alt="Warner Bros." loading="lazy" /></div><span>Warner Bros.</span></div>
+          <div class="logo-cell"><div class="mark"><img src="/assets/logos-2026/sony-pictures.png" alt="Sony Pictures" loading="lazy" /></div><span>Sony Pictures</span></div>
+          <div class="logo-cell"><div class="mark"><img src="/assets/logos-2026/mrsgreenapple.png" alt="Mrs. GREEN APPLE" loading="lazy" /></div><span>Mrs. GREEN APPLE</span></div>
+          <div class="logo-cell"><div class="mark"><img src="/assets/logos-2026/fujitv.png" alt="Fuji TV" loading="lazy" /></div><span>Fuji TV</span></div>
+          <div class="logo-cell"><div class="mark"><img class="wide" src="/assets/logos-2026/tokyo-metropolitan-government.png" alt="Tokyo Metropolitan Government" loading="lazy" /></div><span>Tokyo Metropolitan Government, Bureau of Sewerage</span></div>
+          <div class="logo-cell"><div class="mark"><img class="wide" src="/assets/logos-2026/weftec.png" alt="WEFTEC" loading="lazy" /></div><span>WEFTEC</span></div>
+          <div class="logo-cell"><div class="mark"><img src="/assets/clients-real/nyfa.png" alt="New York Film Academy" loading="lazy" /></div><span>New York Film Academy</span></div>
+          <div class="logo-cell"><div class="mark"><img src="/assets/clients-real/artcenter.png" alt="ArtCenter College of Design" loading="lazy" /></div><span>ArtCenter College of Design</span></div>
+          <div class="logo-cell"><div class="mark"><img src="/assets/clients-real/jetro.png" alt="JETRO" loading="lazy" /></div><span>JETRO</span></div>
+          <div class="logo-cell"><div class="mark"><img src="/assets/clients-real/shonan.ico" alt="Shonan Beauty Clinic" loading="lazy" /></div><span>Shonan Beauty Clinic</span></div>
+        </div>
+      </section>
+
+      <!-- ============ CONTACT ============ -->
+      <section class="section" id="contact" aria-labelledby="contact-title">
+        <div class="section-head"><h2 id="contact-title">Contact</h2><span class="label">Book</span></div>
+        <div class="contact">
+          <div>
+            <p class="big">Let's talk about your event.</p>
+            <div class="links">
+              <a href="mailto:contact@heyhinano.com">contact@heyhinano.com</a>
+              <a href="https://www.linkedin.com/in/hinano-akiyama-b7896b56/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            </div>
+            <p style="margin-top:22px"><button id="bookBtn" class="btn primary" type="button">Book Hinano</button></p>
+          </div>
+          <form id="contactForm" class="form" autocomplete="off">
+            <input type="text" name="company" class="full" placeholder="Company / Studio" />
+            <select name="projectType" aria-label="Project type">
+              <option value="">Project type</option><option>Film / TV</option><option>Music</option><option>Games</option><option>Press / Interview</option><option>Conference / Technical</option><option>Live event / MC</option><option>Other</option>
+            </select>
+            <input type="text" name="date" placeholder="Target date / timeframe" />
+            <input type="text" name="langDir" placeholder="Language direction (JP→EN / EN→JP / both)" />
+            <input type="text" name="budget" placeholder="Budget range (optional)" />
+            <input type="text" name="name" class="full" placeholder="Your name" required />
+            <input type="email" name="email" class="full" placeholder="Your email" required />
+            <textarea name="brief" rows="4" class="full" placeholder="Project brief" required></textarea>
+            <input type="text" name="website" class="full" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <div class="full"><button class="btn primary" type="submit">Send inquiry</button></div>
+            <div class="note full">Submitting opens a draft in your email app so you can review before sending.</div>
+          </form>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>© <span id="year"></span> Hinano Akiyama <span lang="ja">秋山雛乃</span></span>
+        <span>Japanese ↔ English Interpreter · Los Angeles</span>
+      </footer>
+    </main>
+
+    <script>
+      (() => {
+        document.getElementById('year').textContent = new Date().getFullYear();
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        /* ---------- Hero photos ----------
+           Replace these with real event photos: drop files in /assets/photos/ and list them here.
+           Until then the hero uses frame stills from the embedded videos. */
+        const PHOTOS = [
+          { src: 'https://i.ytimg.com/vi/QdNmVWXuYec/maxresdefault.jpg', label: 'Summer Game Fest 2026', caption: 'Final Fantasy VII Revelations announcement · Los Angeles' },
+          { src: 'https://i.ytimg.com/vi/B1ph-GI8BNo/maxresdefault.jpg', label: 'Zach Sang Show', caption: 'Mrs. GREEN APPLE interview · with Fuji TV' },
+          { src: 'https://i.ytimg.com/vi/Zqv8XOR_Tw4/maxresdefault.jpg', label: 'Interview', caption: 'Live Japanese–English interpretation' },
+          { src: 'https://i.ytimg.com/vi/iSoelj2mk_w/maxresdefault.jpg', label: 'Livestream', caption: 'Live Japanese–English interpretation' },
+          { src: 'https://i.ytimg.com/vi/ARPUhj-bKXI/maxresdefault.jpg', label: 'Event', caption: 'On-stage interpretation and bilingual MC' }
+        ];
+        const hero = document.getElementById('hero');
+        const dots = document.getElementById('heroDots');
+        const cap = document.getElementById('heroCaption');
+        PHOTOS.forEach((p, i) => {
+          const d = document.createElement('div'); d.className = 'slide';
+          const im = document.createElement('img'); im.src = p.src; im.alt = p.label; im.loading = i ? 'lazy' : 'eager';
+          im.onerror = () => { im.onerror = null; im.src = p.src.replace('maxresdefault', 'hqdefault'); };
+          d.appendChild(im); hero.insertBefore(d, hero.firstChild);
+          const b = document.createElement('button'); b.setAttribute('role', 'tab'); b.setAttribute('aria-label', p.label);
+          b.addEventListener('click', () => { go(i); restart(); }); dots.appendChild(b);
+        });
+        const slides = [...hero.querySelectorAll('.slide')].reverse();   // inserted at the front, so reverse to match PHOTOS order
+        let cur = 0, timer = null;
+        const go = (n) => {
+          cur = (n + PHOTOS.length) % PHOTOS.length;
+          slides.forEach((s, i) => s.classList.toggle('on', i === cur));
+          [...dots.children].forEach((b, i) => { b.classList.toggle('on', i === cur); b.setAttribute('aria-selected', i === cur); });
+          cap.innerHTML = `<span class="label">${PHOTOS[cur].label}</span>${PHOTOS[cur].caption}`;
+        };
+        const restart = () => { clearInterval(timer); if (!reduced) timer = setInterval(() => go(cur + 1), 5500); };
+        document.getElementById('heroPrev').addEventListener('click', () => { go(cur - 1); restart(); });
+        document.getElementById('heroNext').addEventListener('click', () => { go(cur + 1); restart(); });
+        hero.addEventListener('mouseenter', () => clearInterval(timer));
+        hero.addEventListener('mouseleave', restart);
+        go(0); restart();
+
+        /* ---------- Header + menu ---------- */
+        const header = document.getElementById('header');
+        const menu = document.getElementById('menu');
+        const scrim = document.getElementById('scrim');
+        const menuBtn = document.getElementById('menuBtn');
+        const onScroll = () => header.classList.toggle('solid', window.scrollY > hero.offsetHeight - 80);
+        onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+        const setMenu = (open) => {
+          header.classList.toggle('open', open); menu.classList.toggle('open', open); scrim.classList.toggle('open', open);
+          header.classList.toggle('solid', open || window.scrollY > hero.offsetHeight - 80);
+          menuBtn.setAttribute('aria-expanded', open); menuBtn.querySelector('span').textContent = open ? 'Close' : 'Menu';
+        };
+        menuBtn.addEventListener('click', () => setMenu(!menu.classList.contains('open')));
+        scrim.addEventListener('click', () => setMenu(false));
+        menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+
+        /* ---------- Work carousel ---------- */
+        const track = document.getElementById('track');
+        const works = [...track.querySelectorAll('.work')];
+        const count = document.getElementById('workCount');
+        const updateCount = () => {
+          const mid = track.scrollLeft + track.clientWidth / 2;
+          let idx = 0; works.forEach((w, i) => { if (w.offsetLeft <= mid) idx = i; });
+          count.textContent = `${String(idx + 1).padStart(2, '0')} / ${String(works.length).padStart(2, '0')}`;
+        };
+        const step = () => works[1].offsetLeft - works[0].offsetLeft;
+        document.getElementById('workPrev').addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+        document.getElementById('workNext').addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+        track.addEventListener('scroll', updateCount, { passive: true }); updateCount();
+
+        // Click: hide the placard and play. Stills just dismiss the placard.
+        const play = (frame) => {
+          if (frame.classList.contains('playing')) return;
+          const id = frame.dataset.video;
+          if (!id) { frame.classList.toggle('dismissed'); return; }
+          const start = frame.dataset.start ? `&start=${frame.dataset.start}` : '';
+          const f = document.createElement('iframe');
+          f.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0${start}`;
+          f.title = frame.getAttribute('aria-label') || 'Video';
+          f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+          f.allowFullscreen = true; f.referrerPolicy = 'strict-origin-when-cross-origin';
+          frame.classList.add('playing'); frame.appendChild(f); frame.removeAttribute('role'); frame.removeAttribute('tabindex');
+        };
+        if (window.matchMedia('(max-width: 900px)').matches) {
+          track.querySelectorAll('.placard').forEach((pl) => pl.parentElement.after(pl));
+        }
+        track.querySelectorAll('.frame').forEach((fr) => {
+          fr.addEventListener('click', () => play(fr));
+          fr.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play(fr); } });
+        });
+
+        /* ---------- Contact ---------- */
+        const composeMail = (subject, body) => `mailto:contact@heyhinano.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        document.getElementById('bookBtn')?.addEventListener('click', () => {
+          window.location.href = composeMail('Booking Inquiry — Interpretation', 'Please share project details:\n- Company\n- Project type\n- Timeline\n- Language direction\n- Budget range\n- Notes');
+        });
+        const form = document.getElementById('contactForm'); const createdAt = Date.now();
+        form?.addEventListener('submit', (e) => {
+          e.preventDefault(); const fd = new FormData(form);
+          if ((fd.get('website') || '').toString().trim()) return; if (Date.now() - createdAt < 1500) return;
+          const subject = `[${fd.get('projectType') || 'Inquiry'}] ${fd.get('company') || ''}`.trim();
+          const body = [`Company/Studio: ${fd.get('company') || ''}`, `Project type: ${fd.get('projectType') || ''}`, `Timeline: ${fd.get('date') || ''}`,
+            `Language direction: ${fd.get('langDir') || ''}`, `Budget: ${fd.get('budget') || ''}`, `Name: ${fd.get('name') || ''}`, `Email: ${fd.get('email') || ''}`, '', `Brief:\n${fd.get('brief') || ''}`].join('\n');
+          window.location.href = composeMail(subject, body);
+        });
+      })();
+    </script>
+  </body>
+</html>
