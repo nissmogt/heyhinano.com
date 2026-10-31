@@ -218,29 +218,15 @@
         letter-spacing: -0.05em;
         line-height: .9;
       }
-      .year-head .count { color: var(--muted); font-size: 13px; }
 
       .entry {
         display: grid;
-        grid-template-columns: 56px minmax(0, 300px) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
         gap: 20px clamp(18px, 3vw, 44px);
         padding: 26px 0;
         border-top: 1px solid var(--line);
       }
       .entry:last-child { border-bottom: 1px solid var(--line); }
-      .entry .num {
-        font-variant-numeric: tabular-nums;
-        color: var(--muted);
-        font-size: 13px;
-        padding-top: 4px;
-      }
-      .entry .num::before {
-        content: "";
-        display: block;
-        width: 22px; height: 6px;
-        background: var(--wood);
-        margin-bottom: 10px;
-      }
       .entry h4 {
         margin: 0 0 10px;
         font-size: clamp(1.25rem, 2.1vw, 1.7rem);
@@ -434,14 +420,13 @@
 
       /* ---------- Responsive ---------- */
       @media (max-width: 1100px) {
-        .entry { grid-template-columns: 48px minmax(0, 1fr); }
-        .entry .media { grid-column: 2; }
+        .entry { grid-template-columns: 1fr; }
       }
       @media (max-width: 900px) {
         :root { --rail-w: 0px; }
-        .header nav { display: none; }
+        .header { padding: 12px var(--gutter); flex-wrap: wrap; row-gap: 6px; }
         .header .brand .jp { display: none; }
-        .header { padding: 14px var(--gutter); }
+        .header nav { gap: 14px; font-size: 12px; width: 100%; }
         body { padding-bottom: 48px; }
         .rail {
           position: fixed;
@@ -468,7 +453,7 @@
         .rail a::after { width: 0; }
         .rail a.active::after { width: 14px; }
         .year { scroll-margin-top: 72px; }
-        .hero { padding-top: 96px; }
+        .hero { padding-top: 108px; }
         .hero h1 { font-size: clamp(3rem, 13vw, 9rem); }
         .hero .kanji { font-size: clamp(3rem, 15vw, 8.2rem); }
         .hero .meta { flex-direction: column; gap: 6px; align-items: flex-start; text-align: left; }
@@ -478,9 +463,6 @@
         .contact { grid-template-columns: 1fr; }
       }
       @media (max-width: 600px) {
-        .entry { grid-template-columns: 1fr; }
-        .entry .media { grid-column: 1; }
-        .entry .num::before { display: inline-block; margin: 0 10px 2px 0; }
         .form { grid-template-columns: 1fr; }
         .services li { grid-template-columns: 1fr; }
         .section-head { grid-template-columns: 1fr; }
@@ -510,7 +492,6 @@
       <a href="#y2025" data-year="y2025">2025</a>
       <a href="#y2024" data-year="y2024">2024</a>
       <a href="#y2023" data-year="y2023">2023</a>
-      <a href="#yearlier" data-year="yearlier">Earlier</a>
     </nav>
 
     <main id="top">
@@ -547,10 +528,9 @@
 
         <!-- 2026 -->
         <div class="year" id="y2026" data-year-section>
-          <div class="year-head"><h3>2026</h3><span class="count">4 projects</span></div>
+          <div class="year-head"><h3>2026</h3></div>
 
           <article class="entry">
-            <div class="num">01</div>
             <div>
               <h4>Godzilla Minus One — Los Angeles Premiere</h4>
               <p class="desc">Interpreter for the VFX team at the Los Angeles premiere.</p>
@@ -570,7 +550,6 @@
           </article>
 
           <article class="entry">
-            <div class="num">02</div>
             <div>
               <h4>Final Fantasy VII Revelations — Summer Game Fest 2026</h4>
               <p class="desc">Announcement of Final Fantasy VII Revelations on the Summer Game Fest 2026 stage.</p>
@@ -588,7 +567,6 @@
           </article>
 
           <article class="entry">
-            <div class="num">03</div>
             <div>
               <h4>Mrs. GREEN APPLE on the Zach Sang Show</h4>
               <p class="desc">Interpretation for Mrs. GREEN APPLE's interview on the Zach Sang Show, with Fuji TV.</p>
@@ -612,7 +590,6 @@
           </article>
 
           <article class="entry">
-            <div class="num">04</div>
             <div>
               <h4>WEFTEC 2026</h4>
               <p class="desc">Interpretation for the Tokyo Metropolitan Government Bureau of Sewerage at WEFTEC 2026, the Water Environment Federation's annual technical exhibition and conference.</p>
@@ -634,9 +611,8 @@
 
         <!-- 2025 -->
         <div class="year" id="y2025" data-year-section>
-          <div class="year-head"><h3>2025</h3><span class="count">Game credits · Interpretation clips</span></div>
+          <div class="year-head"><h3>2025</h3></div>
           <article class="entry">
-            <div class="num">01</div>
             <div>
               <h4>Square Enix titles</h4>
               <p class="desc">Credited localization and language work on titles released in 2025.</p>
@@ -660,7 +636,6 @@
           </article>
 
           <article class="entry">
-            <div class="num">02</div>
             <div>
               <h4>Selected interpretation clips</h4>
               <p class="desc">Live interpretation for interviews, panels, and livestreams.</p>
@@ -681,9 +656,8 @@
 
         <!-- 2024 -->
         <div class="year" id="y2024" data-year-section>
-          <div class="year-head"><h3>2024</h3><span class="count">Game credits</span></div>
+          <div class="year-head"><h3>2024</h3></div>
           <article class="entry">
-            <div class="num">01</div>
             <div>
               <h4>Square Enix titles</h4>
               <p class="desc">Credited localization and language work on titles released in 2024.</p>
@@ -717,9 +691,8 @@
 
         <!-- 2023 -->
         <div class="year" id="y2023" data-year-section>
-          <div class="year-head"><h3>2023</h3><span class="count">Game credits</span></div>
+          <div class="year-head"><h3>2023</h3></div>
           <article class="entry">
-            <div class="num">01</div>
             <div>
               <h4>Square Enix titles</h4>
               <p class="desc">Credited localization and language work on titles released in 2023.</p>
@@ -743,35 +716,6 @@
           </article>
         </div>
 
-        <!-- Earlier -->
-        <div class="year" id="yearlier" data-year-section>
-          <div class="year-head"><h3>Earlier</h3><span class="count">Game credits</span></div>
-
-
-          <article class="entry">
-            <div class="num">01</div>
-            <div>
-              <h4>Square Enix titles</h4>
-              <p class="desc">Earlier credited titles.</p>
-              <dl>
-                <dt>Role</dt><dd>Localization · Language support</dd>
-                <dt>Credits</dt><dd><a href="https://www.mobygames.com/person/1354824/hinano-akiyama/credits/" target="_blank" rel="noopener noreferrer">MobyGames</a></dd>
-              </dl>
-            </div>
-            <div class="media">
-              <div class="covers">
-                <a class="cover" href="https://www.mobygames.com/game/146826/war-of-the-visions-final-fantasy-brave-exvius/" target="_blank" rel="noopener noreferrer">
-                  <img src="https://cdn.mobygames.com/covers/8922125-war-of-the-visions-final-fantasy-brave-exvius-iphone-front-cover.jpg" alt="War of the Visions: Final Fantasy Brave Exvius cover" loading="lazy" />
-                  <span>War of the Visions: FFBE</span>
-                </a>
-                <a class="cover" href="https://www.mobygames.com/game/83602/dragon-quest-builders/" target="_blank" rel="noopener noreferrer">
-                  <img src="https://cdn.mobygames.com/covers/2726703-dragon-quest-builders-playstation-3-front-cover.jpg" alt="Dragon Quest Builders cover" loading="lazy" />
-                  <span>Dragon Quest Builders</span>
-                </a>
-              </div>
-            </div>
-          </article>
-        </div>
       </section>
 
       <!-- ============ PRESS ============ -->
